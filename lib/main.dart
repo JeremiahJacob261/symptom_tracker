@@ -140,7 +140,11 @@ class MyApp extends StatelessWidget {
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFFF5F5F5),
         selectedColor: const Color(0xFFB2DFDB),
-        labelStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        labelStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          color: Color(0xFF212121),
+        ),
         secondaryLabelStyle: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -924,6 +928,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       runSpacing: 8,
                       children: _bodyAreas.map((area) {
                         final isSelected = _selectedBodyArea == area;
+                        final labelColor = isSelected
+                            ? theme.colorScheme.onPrimaryContainer
+                            : theme.colorScheme.onSurface;
                         return ChoiceChip(
                           label: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -935,7 +942,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         theme.colorScheme.onPrimaryContainer),
                                 const SizedBox(width: 4),
                               ],
-                              Text(area),
+                              Text(
+                                area,
+                                style: TextStyle(color: labelColor),
+                              ),
                             ],
                           ),
                           selected: isSelected,
@@ -973,6 +983,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       runSpacing: 8,
                       children: _moods.map((mood) {
                         final isSelected = _selectedMood == mood;
+                        final labelColor = isSelected
+                            ? theme.colorScheme.onPrimaryContainer
+                            : theme.colorScheme.onSurface;
                         return ChoiceChip(
                           avatar: Icon(
                             _moodIcons[mood],
@@ -981,7 +994,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ? theme.colorScheme.onPrimaryContainer
                                 : theme.colorScheme.onSurfaceVariant,
                           ),
-                          label: Text(mood),
+                          label: Text(
+                            mood,
+                            style: TextStyle(color: labelColor),
+                          ),
                           selected: isSelected,
                           onSelected: (_) =>
                               setState(() => _selectedMood = mood),
