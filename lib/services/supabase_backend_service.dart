@@ -9,7 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class SupabaseBackendService {
   SupabaseBackendService._(this.client);
 
-  static const supabaseUrl = "https://pggvcuchcrytifxnzhef.supabase.co/rest/v1";
+  static const supabaseUrl = "https://pggvcuchcrytifxnzhef.supabase.co";
   static const publishableKey ="sb_publishable_HIltu5fP_Y4YU-mhgABncg_wlmIu5jx";
   static const photoBucket = 'mar_symptom_photos';
 

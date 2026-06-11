@@ -101,9 +101,9 @@ function readBearerToken(request: Request): string | null {
 }
 
 async function getSupabaseUser(env: Env, token: string): Promise<{ id: string } | null> {
-  const response = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
+  const response = await fetch(`https://pggvcuchcrytifxnzhef.supabase.co/auth/v1/user`, {
     headers: {
-      apikey: env.SUPABASE_PUBLISHABLE_KEY,
+      apikey: "sb_publishable_HIltu5fP_Y4YU-mhgABncg_wlmIu5jx",
       authorization: `Bearer ${token}`,
     },
   });
@@ -128,10 +128,10 @@ async function fetchEntries(
   if (entryId) params.set("or", `(id.eq.${entryId},client_id.eq.${entryId})`);
 
   const response = await fetch(
-    `${env.SUPABASE_URL}/rest/v1/mar_symptom_entries?${params}`,
+    `https://pggvcuchcrytifxnzhef.supabase.co/rest/v1/mar_symptom_entries?${params}`,
     {
       headers: {
-        apikey: env.SUPABASE_PUBLISHABLE_KEY,
+        apikey: "sb_publishable_HIltu5fP_Y4YU-mhgABncg_wlmIu5jx",
         authorization: `Bearer ${token}`,
       },
     },
@@ -383,10 +383,10 @@ async function persistResult(
         raw_response: result,
       };
 
-  const response = await fetch(`${env.SUPABASE_URL}/rest/v1/${table}`, {
+  const response = await fetch(`https://pggvcuchcrytifxnzhef.supabase.co/rest/v1/${table}`, {
     method: "POST",
     headers: {
-      apikey: env.SUPABASE_PUBLISHABLE_KEY,
+      apikey: "sb_publishable_HIltu5fP_Y4YU-mhgABncg_wlmIu5jx",
       authorization: `Bearer ${token}`,
       "content-type": "application/json",
       prefer: "return=minimal",
