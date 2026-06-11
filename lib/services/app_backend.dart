@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import 'local_symptom_repository.dart';
 import 'supabase_backend_service.dart';
 import 'sync_service.dart';
@@ -9,7 +11,17 @@ class AppBackend {
 
   static Future<void> bootstrap() async {
     await repository.init();
-    remote = await SupabaseBackendService.bootstrap();
+    try {
+      remote = await SupabaseBackendService.bootstrap();
+    } catch (error, stackTrace) {
+      remote = null;
+      syncService = null;
+      if (kDebugMode) {
+        debugPrint('Remote backend bootstrap failed: $error');
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      return;
+    }
     final backend = remote;
     if (backend == null) return;
     syncService = SyncService(local: repository, remote: backend);
