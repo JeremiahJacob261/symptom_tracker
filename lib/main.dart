@@ -641,6 +641,29 @@ class _HomeScreenState extends State<HomeScreen> {
     return 'Extreme';
   }
 
+  Color _symptomChipForegroundColor(ThemeData theme, bool isSelected) {
+    if (isSelected) return theme.colorScheme.onPrimaryContainer;
+    return theme.brightness == Brightness.dark
+        ? const Color(0xFFF5F7FA)
+        : const Color(0xFF1F2937);
+  }
+
+  Color _symptomChipBackgroundColor(ThemeData theme, bool isSelected) {
+    if (isSelected) return theme.colorScheme.primaryContainer;
+    return theme.brightness == Brightness.dark
+        ? const Color(0xFF2B3035)
+        : const Color(0xFFFFFFFF);
+  }
+
+  BorderSide _symptomChipBorder(ThemeData theme, bool isSelected) {
+    final color = isSelected
+        ? theme.colorScheme.primary
+        : theme.colorScheme.outline.withValues(
+            alpha: theme.brightness == Brightness.dark ? 0.9 : 0.7,
+          );
+    return BorderSide(color: color);
+  }
+
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final image = await picker.pickImage(source: ImageSource.camera);
@@ -928,10 +951,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       runSpacing: 8,
                       children: _bodyAreas.map((area) {
                         final isSelected = _selectedBodyArea == area;
-                        final labelColor = isSelected
-                            ? theme.colorScheme.onPrimaryContainer
-                            : theme.colorScheme.onSurface;
+                        final labelColor =
+                            _symptomChipForegroundColor(theme, isSelected);
                         return ChoiceChip(
+                          backgroundColor:
+                              _symptomChipBackgroundColor(theme, false),
+                          selectedColor:
+                              _symptomChipBackgroundColor(theme, true),
+                          checkmarkColor: theme.colorScheme.onPrimaryContainer,
+                          side: _symptomChipBorder(theme, isSelected),
+                          labelStyle: TextStyle(
+                            color: labelColor,
+                            fontWeight:
+                                isSelected ? FontWeight.w600 : FontWeight.w500,
+                          ),
                           label: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -983,16 +1016,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       runSpacing: 8,
                       children: _moods.map((mood) {
                         final isSelected = _selectedMood == mood;
-                        final labelColor = isSelected
-                            ? theme.colorScheme.onPrimaryContainer
-                            : theme.colorScheme.onSurface;
+                        final labelColor =
+                            _symptomChipForegroundColor(theme, isSelected);
                         return ChoiceChip(
+                          backgroundColor:
+                              _symptomChipBackgroundColor(theme, false),
+                          selectedColor:
+                              _symptomChipBackgroundColor(theme, true),
+                          checkmarkColor: theme.colorScheme.onPrimaryContainer,
+                          side: _symptomChipBorder(theme, isSelected),
+                          labelStyle: TextStyle(
+                            color: labelColor,
+                            fontWeight:
+                                isSelected ? FontWeight.w600 : FontWeight.w500,
+                          ),
                           avatar: Icon(
                             _moodIcons[mood],
                             size: 18,
-                            color: isSelected
-                                ? theme.colorScheme.onPrimaryContainer
-                                : theme.colorScheme.onSurfaceVariant,
+                            color: labelColor,
                           ),
                           label: Text(
                             mood,
