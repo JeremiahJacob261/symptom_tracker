@@ -63,4 +63,34 @@ void main() {
       contains('This is not a diagnosis'),
     );
   });
+
+  test('symptomFrequency reads structured and custom symptoms', () {
+    final entries = [
+      {
+        'timestamp': DateTime(2026, 6, 10).toIso8601String(),
+        'pain_level': 4,
+        'body_area': 'Head',
+        'mood': 'Calm',
+        'symptoms_json': '["Fever","Headache"]',
+        'custom_symptoms': 'Light sensitivity',
+      },
+      {
+        'timestamp': DateTime(2026, 6, 11).toIso8601String(),
+        'pain_level': 6,
+        'body_area': 'Chest',
+        'mood': 'Anxious',
+        'symptoms_json': '["Fever","Shortness of breath"]',
+        'temperature_celsius': 39.5,
+      },
+    ];
+
+    final frequency = HealthAnalytics.symptomFrequency(entries);
+    final insight = HealthAnalytics.fallbackInsight(entries);
+
+    expect(frequency['Fever'], 2);
+    expect(frequency['Headache'], 1);
+    expect(frequency['Light sensitivity'], 1);
+    expect(insight.patterns.join(' '), contains('Most common symptom: Fever'));
+    expect(insight.redFlags.join(' '), contains('Very high fever'));
+  });
 }

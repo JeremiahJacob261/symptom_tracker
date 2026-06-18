@@ -2,9 +2,11 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:symptom_tracker/services/ai_insight_service.dart';
 import 'package:symptom_tracker/services/app_backend.dart';
 import 'package:symptom_tracker/services/health_analytics.dart';
+import 'package:symptom_tracker/data/symptom_taxonomy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:path_provider/path_provider.dart';
@@ -50,6 +52,10 @@ class ThemeNotifier extends ChangeNotifier {
 
 final themeNotifier = ThemeNotifier();
 
+String _preferredTemperatureUnit(BuildContext context) {
+  return Localizations.localeOf(context).countryCode == 'US' ? 'F' : 'C';
+}
+
 class UserService {
   static Future<String?> getUserName() async {
     final prefs = await SharedPreferences.getInstance();
@@ -77,7 +83,7 @@ class MyApp extends StatelessWidget {
           themeMode: themeNotifier.isDark ? ThemeMode.dark : ThemeMode.light,
           theme: _buildLightTheme(),
           darkTheme: _buildDarkTheme(),
-          home: const MainScreen(),
+          home: const AppLaunchGate(),
         );
       },
     );
@@ -88,31 +94,33 @@ class MyApp extends StatelessWidget {
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: const ColorScheme.light(
-        primary: Color(0xFF009688),
+        primary: Color(0xFF007C78),
         onPrimary: Colors.white,
-        primaryContainer: Color(0xFFB2DFDB),
-        onPrimaryContainer: Color(0xFF004D40),
-        secondary: Color(0xFF00897B),
+        primaryContainer: Color(0xFFC7F0EA),
+        onPrimaryContainer: Color(0xFF063F3D),
+        secondary: Color(0xFF4B83A6),
         onSecondary: Colors.white,
-        secondaryContainer: Color(0xFF80CBC4),
-        onSecondaryContainer: Color(0xFF00695C),
+        secondaryContainer: Color(0xFFD7EAF6),
+        onSecondaryContainer: Color(0xFF14384F),
+        tertiary: Color(0xFFE6A23C),
+        onTertiary: Color(0xFF2D1B00),
         surface: Color(0xFFFFFFFF),
-        onSurface: Color(0xFF212121),
-        onSurfaceVariant: Color(0xFF757575),
-        error: Color(0xFFD32F2F),
+        onSurface: Color(0xFF172121),
+        onSurfaceVariant: Color(0xFF5D6A6A),
+        error: Color(0xFFC62828),
         onError: Colors.white,
-        outline: Color(0xFFBDBDBD),
+        outline: Color(0xFFC4D0D0),
       ),
-      scaffoldBackgroundColor: const Color(0xFFFAFAFA),
+      scaffoldBackgroundColor: const Color(0xFFF6FAF9),
       cardTheme: CardThemeData(
         color: const Color(0xFFFFFFFF),
-        elevation: 2,
-        shadowColor: Colors.black.withValues(alpha: 0.1),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        elevation: 1,
+        shadowColor: Colors.black.withValues(alpha: 0.08),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFFFAFAFA),
-        foregroundColor: Color(0xFF212121),
+        backgroundColor: Color(0xFFF6FAF9),
+        foregroundColor: Color(0xFF172121),
         elevation: 0,
         centerTitle: true,
         titleTextStyle: TextStyle(
@@ -123,23 +131,23 @@ class MyApp extends StatelessWidget {
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: Color(0xFFFFFFFF),
-        selectedItemColor: Color(0xFF009688),
-        unselectedItemColor: Color(0xFF757575),
+        selectedItemColor: Color(0xFF007C78),
+        unselectedItemColor: Color(0xFF5D6A6A),
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),
       sliderTheme: SliderThemeData(
-        activeTrackColor: const Color(0xFF009688),
+        activeTrackColor: const Color(0xFF007C78),
         inactiveTrackColor: const Color(0xFFE0E0E0),
-        thumbColor: const Color(0xFF009688),
-        overlayColor: const Color(0xFF009688).withValues(alpha: 0.12),
+        thumbColor: const Color(0xFF007C78),
+        overlayColor: const Color(0xFF007C78).withValues(alpha: 0.12),
         trackHeight: 8,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12),
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 24),
       ),
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFFF5F5F5),
-        selectedColor: const Color(0xFFB2DFDB),
+        selectedColor: const Color(0xFFC7F0EA),
         labelStyle: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w500,
@@ -148,7 +156,7 @@ class MyApp extends StatelessWidget {
         secondaryLabelStyle: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF004D40)),
+            color: Color(0xFF063F3D)),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
@@ -165,39 +173,39 @@ class MyApp extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF009688), width: 2),
+          borderSide: const BorderSide(color: Color(0xFF007C78), width: 2),
         ),
         contentPadding: const EdgeInsets.all(16),
         hintStyle: const TextStyle(color: Color(0xFF9E9E9E), fontSize: 14),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF009688),
+          backgroundColor: const Color(0xFF007C78),
           foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 56),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           elevation: 0,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: const Color(0xFF009688),
+          foregroundColor: const Color(0xFF007C78),
           minimumSize: const Size(double.infinity, 48),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          side: const BorderSide(color: Color(0xFF009688)),
+          side: const BorderSide(color: Color(0xFF007C78)),
           textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
       ),
-      fontFamily: 'Roboto',
-      textTheme: const TextTheme(
+      fontFamily: GoogleFonts.inter().fontFamily,
+      textTheme: GoogleFonts.interTextTheme(const TextTheme(
         displayLarge: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.w700,
             color: Color(0xFF212121),
-            letterSpacing: -0.5),
+            letterSpacing: 0),
         headlineLarge: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w700,
@@ -214,28 +222,28 @@ class MyApp extends StatelessWidget {
             fontSize: 16,
             fontWeight: FontWeight.w500,
             color: Color(0xFF212121),
-            letterSpacing: 0.15),
+            letterSpacing: 0),
         bodyLarge: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
             color: Color(0xFF212121),
-            letterSpacing: 0.5),
+            letterSpacing: 0),
         bodyMedium: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
             color: Color(0xFF212121),
-            letterSpacing: 0.25),
+            letterSpacing: 0),
         bodySmall: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
             color: Color(0xFF757575),
-            letterSpacing: 0.4),
+            letterSpacing: 0),
         labelLarge: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: Color(0xFF212121),
-            letterSpacing: 0.1),
-      ),
+            letterSpacing: 0),
+      )),
     );
   }
 
@@ -244,27 +252,29 @@ class MyApp extends StatelessWidget {
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: const ColorScheme.dark(
-        primary: Color(0xFF4DB6AC),
-        onPrimary: Color(0xFF00332C),
-        primaryContainer: Color(0xFF004D40),
-        onPrimaryContainer: Color(0xFFB2DFDB),
-        secondary: Color(0xFF80CBC4),
-        onSecondary: Color(0xFF00332C),
-        secondaryContainer: Color(0xFF00695C),
-        onSecondaryContainer: Color(0xFF80CBC4),
-        surface: Color(0xFF121212),
+        primary: Color(0xFF72D3C9),
+        onPrimary: Color(0xFF053A38),
+        primaryContainer: Color(0xFF0E504D),
+        onPrimaryContainer: Color(0xFFC7F0EA),
+        secondary: Color(0xFF9CCAE4),
+        onSecondary: Color(0xFF113448),
+        secondaryContainer: Color(0xFF224D66),
+        onSecondaryContainer: Color(0xFFD7EAF6),
+        tertiary: Color(0xFFF0B45B),
+        onTertiary: Color(0xFF2D1B00),
+        surface: Color(0xFF101818),
         onSurface: Color(0xFFFFFFFF),
         onSurfaceVariant: Color(0xFFBDBDBD),
         error: Color(0xFFEF5350),
         onError: Colors.black,
-        outline: Color(0xFF424242),
+        outline: Color(0xFF405454),
       ),
-      scaffoldBackgroundColor: const Color(0xFF000000),
+      scaffoldBackgroundColor: const Color(0xFF0B1111),
       cardTheme: CardThemeData(
         color: const Color(0xFF1E1E1E),
         elevation: 2,
         shadowColor: Colors.black.withValues(alpha: 0.3),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xFF121212),
@@ -331,7 +341,7 @@ class MyApp extends StatelessWidget {
           foregroundColor: const Color(0xFF00332C),
           minimumSize: const Size(double.infinity, 56),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           elevation: 0,
         ),
@@ -346,13 +356,13 @@ class MyApp extends StatelessWidget {
           textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
       ),
-      fontFamily: 'Roboto',
-      textTheme: const TextTheme(
+      fontFamily: GoogleFonts.inter().fontFamily,
+      textTheme: GoogleFonts.interTextTheme(const TextTheme(
         displayLarge: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.w700,
             color: Color(0xFFFFFFFF),
-            letterSpacing: -0.5),
+            letterSpacing: 0),
         headlineLarge: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w700,
@@ -369,30 +379,308 @@ class MyApp extends StatelessWidget {
             fontSize: 16,
             fontWeight: FontWeight.w500,
             color: Color(0xFFFFFFFF),
-            letterSpacing: 0.15),
+            letterSpacing: 0),
         bodyLarge: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
             color: Color(0xFFFFFFFF),
-            letterSpacing: 0.5),
+            letterSpacing: 0),
         bodyMedium: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
             color: Color(0xFFFFFFFF),
-            letterSpacing: 0.25),
+            letterSpacing: 0),
         bodySmall: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
             color: Color(0xFFBDBDBD),
-            letterSpacing: 0.4),
+            letterSpacing: 0),
         labelLarge: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: Color(0xFFFFFFFF),
-            letterSpacing: 0.1),
+            letterSpacing: 0),
+      )),
+    );
+  }
+}
+
+class AppLaunchGate extends StatefulWidget {
+  const AppLaunchGate({super.key});
+
+  @override
+  State<AppLaunchGate> createState() => _AppLaunchGateState();
+}
+
+class _AppLaunchGateState extends State<AppLaunchGate> {
+  static const _onboardingCompleteKey = 'onboardingComplete';
+  bool _showSplash = true;
+  bool? _onboardingComplete;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLaunchState();
+  }
+
+  Future<void> _loadLaunchState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final complete = prefs.getBool(_onboardingCompleteKey) ?? false;
+    await Future<void>.delayed(const Duration(milliseconds: 700));
+    if (!mounted) return;
+    setState(() {
+      _onboardingComplete = complete;
+      _showSplash = false;
+    });
+  }
+
+  Future<void> _completeOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_onboardingCompleteKey, true);
+    if (!mounted) return;
+    setState(() => _onboardingComplete = true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_showSplash || _onboardingComplete == null) {
+      return const SplashScreen();
+    }
+    if (_onboardingComplete == false) {
+      return OnboardingScreen(onComplete: _completeOnboarding);
+    }
+    return const MainScreen();
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              theme.colorScheme.primaryContainer,
+              theme.scaffoldBackgroundColor,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 92,
+                height: 92,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.24),
+                      blurRadius: 24,
+                      offset: const Offset(0, 12),
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  Icons.health_and_safety_outlined,
+                  color: theme.colorScheme.onPrimary,
+                  size: 46,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'Symptom Tracker',
+                style: theme.textTheme.headlineLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Track patterns. Share clearer health notes.',
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
+}
+
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key, required this.onComplete});
+
+  final Future<void> Function() onComplete;
+
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  final _controller = PageController();
+  int _index = 0;
+
+  static const _pages = [
+    _OnboardingPageData(
+      icon: Icons.edit_note_outlined,
+      title: 'Record symptoms clearly',
+      body:
+          'Log pain, body area, mood, temperature, and symptoms in one focused flow.',
+    ),
+    _OnboardingPageData(
+      icon: Icons.insights_outlined,
+      title: 'Understand patterns over time',
+      body:
+          'Use timeline, statistics, and insights to notice changes you can discuss with a clinician.',
+    ),
+    _OnboardingPageData(
+      icon: Icons.privacy_tip_outlined,
+      title: 'Keep health context grounded',
+      body:
+          'This app helps organize personal health notes. It does not diagnose or replace medical advice.',
+    ),
+  ];
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _next() async {
+    if (_index == _pages.length - 1) {
+      await widget.onComplete();
+      return;
+    }
+    await _controller.nextPage(
+      duration: const Duration(milliseconds: 240),
+      curve: Curves.easeOut,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  children: [
+                    Icon(Icons.health_and_safety_outlined,
+                        color: theme.colorScheme.primary),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Symptom Tracker',
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w800),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: PageView.builder(
+                  controller: _controller,
+                  itemCount: _pages.length,
+                  onPageChanged: (value) => setState(() => _index = value),
+                  itemBuilder: (context, index) {
+                    final page = _pages[index];
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 112,
+                          height: 112,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(28),
+                          ),
+                          child: Icon(
+                            page.icon,
+                            size: 54,
+                            color: theme.colorScheme.onPrimaryContainer,
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        Text(
+                          page.title,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.headlineLarge?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          page.body,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                            height: 1.45,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(_pages.length, (index) {
+                  final selected = _index == index;
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 180),
+                    width: selected ? 28 : 8,
+                    height: 8,
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    decoration: BoxDecoration(
+                      color: selected
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.outline,
+                      borderRadius: BorderRadius.circular(99),
+                    ),
+                  );
+                }),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: _next,
+                child: Text(
+                    _index == _pages.length - 1 ? 'Get started' : 'Continue'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _OnboardingPageData {
+  const _OnboardingPageData({
+    required this.icon,
+    required this.title,
+    required this.body,
+  });
+
+  final IconData icon;
+  final String title;
+  final String body;
 }
 
 class MainScreen extends StatefulWidget {
@@ -567,7 +855,12 @@ class _HomeScreenState extends State<HomeScreen> {
   double _painLevel = 5;
   String? _selectedBodyArea;
   String? _selectedMood;
+  final Set<String> _selectedSymptoms = {};
   final _notesController = TextEditingController();
+  final _customSymptomsController = TextEditingController();
+  final _temperatureController = TextEditingController();
+  String _temperatureUnit = 'C';
+  bool _temperatureUnitInitialized = false;
   String? _photoPath;
   String? _photoBytesBase64;
   Uint8List? _photoPreviewBytes;
@@ -619,6 +912,23 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadUserName();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_temperatureUnitInitialized) return;
+    final locale = Localizations.localeOf(context);
+    _temperatureUnit = locale.countryCode == 'US' ? 'F' : 'C';
+    _temperatureUnitInitialized = true;
+  }
+
+  @override
+  void dispose() {
+    _notesController.dispose();
+    _customSymptomsController.dispose();
+    _temperatureController.dispose();
+    super.dispose();
+  }
+
   Future<void> _loadUserName() async {
     final name = await UserService.getUserName();
     setState(() => _userName = name);
@@ -630,6 +940,14 @@ class _HomeScreenState extends State<HomeScreen> {
     if (level <= 6) return const Color(0xFFFF9800);
     if (level <= 8) return const Color(0xFFFF5722);
     return const Color(0xFFF44336);
+  }
+
+  double? _readTemperatureCelsius() {
+    final raw = _temperatureController.text.trim();
+    if (raw.isEmpty) return null;
+    final value = double.tryParse(raw);
+    if (value == null) return null;
+    return celsiusFromInput(value, _temperatureUnit);
   }
 
   String _getPainLabel(double level) {
@@ -685,10 +1003,22 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
 
+    final temperatureCelsius = _readTemperatureCelsius();
+    if (_temperatureController.text.trim().isNotEmpty &&
+        temperatureCelsius == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter a valid body temperature')),
+      );
+      return;
+    }
+
     await DatabaseHelper.insertEntry({
       'pain_level': _painLevel.round(),
       'body_area': _selectedBodyArea,
       'mood': _selectedMood,
+      'symptoms_json': jsonEncode(_selectedSymptoms.toList()),
+      'custom_symptoms': _customSymptomsController.text.trim(),
+      'temperature_celsius': temperatureCelsius,
       'notes': _notesController.text,
       'photo_path': _photoPath,
       'photo_bytes_base64': _photoBytesBase64,
@@ -700,7 +1030,10 @@ class _HomeScreenState extends State<HomeScreen> {
       _painLevel = 5;
       _selectedBodyArea = null;
       _selectedMood = null;
+      _selectedSymptoms.clear();
       _notesController.clear();
+      _customSymptomsController.clear();
+      _temperatureController.clear();
       _photoPath = null;
       _photoBytesBase64 = null;
       _photoPreviewBytes = null;
@@ -789,18 +1122,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Text(
                             _userName != null
-                                ? 'Hello, ${_userName ?? ''}!'
-                                : 'Hello!',
+                                ? 'Log today, ${_userName ?? ''}'
+                                : 'Log symptoms',
                             style: theme.textTheme.headlineLarge?.copyWith(
                               fontWeight: FontWeight.w700,
                               color: theme.colorScheme.onSurface,
                             ),
                           ),
                           const SizedBox(height: 4),
-                          Text(
-                            'How are you feeling today?',
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
+                          SizedBox(
+                            width: MediaQuery.sizeOf(context).width * 0.72,
+                            child: Text(
+                              'Record symptoms, mood, and body area to track health trends over time.',
+                              style: theme.textTheme.bodyLarge?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                              ),
                             ),
                           ),
                         ],
@@ -929,6 +1265,165 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
 
+        // Symptom Categories Card
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Symptoms',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Choose all symptoms you are experiencing today.',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    ...symptomCategories.map((category) {
+                      return Theme(
+                        data: theme.copyWith(dividerColor: Colors.transparent),
+                        child: ExpansionTile(
+                          tilePadding: EdgeInsets.zero,
+                          childrenPadding: const EdgeInsets.only(bottom: 8),
+                          title: Text(
+                            category.name,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          subtitle: Text(
+                            '${category.symptoms.length} common symptoms',
+                            style: theme.textTheme.bodySmall,
+                          ),
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: category.symptoms.map((symptom) {
+                                  final isSelected =
+                                      _selectedSymptoms.contains(symptom);
+                                  final labelColor =
+                                      _symptomChipForegroundColor(
+                                          theme, isSelected);
+                                  return FilterChip(
+                                    backgroundColor:
+                                        _symptomChipBackgroundColor(
+                                            theme, false),
+                                    selectedColor: _symptomChipBackgroundColor(
+                                        theme, true),
+                                    checkmarkColor:
+                                        theme.colorScheme.onPrimaryContainer,
+                                    side: _symptomChipBorder(theme, isSelected),
+                                    labelStyle: TextStyle(
+                                      color: labelColor,
+                                      fontWeight: isSelected
+                                          ? FontWeight.w600
+                                          : FontWeight.w500,
+                                    ),
+                                    label: Text(symptom),
+                                    selected: isSelected,
+                                    onSelected: (selected) => setState(() {
+                                      if (selected) {
+                                        _selectedSymptoms.add(symptom);
+                                      } else {
+                                        _selectedSymptoms.remove(symptom);
+                                      }
+                                    }),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: _customSymptomsController,
+                      decoration: const InputDecoration(
+                        labelText: 'Other symptoms',
+                        hintText: 'Add anything not listed above',
+                        prefixIcon: Icon(Icons.note_add_outlined),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+
+        // Temperature Card
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Body Temperature',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Optional, but useful when fever or chills are present.',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _temperatureController,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                            decoration: InputDecoration(
+                              hintText:
+                                  _temperatureUnit == 'F' ? '98.6' : '37.0',
+                              prefixIcon: const Icon(Icons.thermostat_outlined),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        SegmentedButton<String>(
+                          segments: const [
+                            ButtonSegment(value: 'C', label: Text('C')),
+                            ButtonSegment(value: 'F', label: Text('F')),
+                          ],
+                          selected: {_temperatureUnit},
+                          onSelectionChanged: (value) => setState(
+                            () => _temperatureUnit = value.first,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+
         // Body Area Card
         SliverToBoxAdapter(
           child: Padding(
@@ -942,7 +1437,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text(
                       'Body Area',
                       style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Select where you are experiencing symptoms.',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -1007,7 +1509,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text(
                       'Mood',
                       style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Mood can correlate with symptoms and pain patterns.',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -1201,9 +1710,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
         _filteredEntries = _entries;
       } else {
         _filteredEntries = _entries.where((entry) {
-          final text =
-              ('${entry['body_area']} ${entry['mood']} ${entry['notes']}')
-                  .toLowerCase();
+          final symptoms = readEntrySymptoms(entry).join(' ');
+          final customSymptoms = readCustomSymptoms(entry);
+          final temperature = readTemperatureCelsius(entry)?.toString() ?? '';
+          final text = ('${entry['body_area']} ${entry['mood']} '
+                  '${entry['notes']} $symptoms $customSymptoms $temperature')
+              .toLowerCase();
           return text.contains(query.toLowerCase());
         }).toList();
       }
@@ -1230,6 +1742,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final painColor = _getPainColor(painLevel);
     final photoPath = entry['photo_path']?.toString();
     final photoBytes = entry['photo_bytes_base64']?.toString();
+    final symptoms = readEntrySymptoms(entry);
+    final customSymptoms = readCustomSymptoms(entry);
+    final temperature = readTemperatureCelsius(entry);
+    final temperatureUnit = _preferredTemperatureUnit(context);
 
     await showModalBottomSheet<void>(
       context: context,
@@ -1304,6 +1820,36 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     label: 'Mood',
                     value: entry['mood']?.toString() ?? 'Not set',
                   ),
+                  _DetailRow(
+                    icon: Icons.thermostat_outlined,
+                    label: 'Temperature',
+                    value: formatTemperature(
+                      temperature,
+                      unit: temperatureUnit,
+                    ),
+                  ),
+                  if (symptoms.isNotEmpty || customSymptoms.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Text('Symptoms',
+                        style: theme.textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w700)),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        ...symptoms.map((symptom) => Chip(
+                              label: Text(symptom),
+                              avatar: const Icon(Icons.check_circle, size: 16),
+                            )),
+                        if (customSymptoms.isNotEmpty)
+                          Chip(
+                            label: Text(customSymptoms),
+                            avatar: const Icon(Icons.add, size: 16),
+                          ),
+                      ],
+                    ),
+                  ],
                   const SizedBox(height: 12),
                   Text('Notes',
                       style: theme.textTheme.titleMedium
@@ -1427,6 +1973,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 final painLevel = entry['pain_level'] as int;
                 final painColor = _getPainColor(painLevel);
                 final date = DateTime.parse(entry['timestamp']);
+                final symptoms = readEntrySymptoms(entry);
+                final temperature = readTemperatureCelsius(entry);
+                final temperatureUnit = _preferredTemperatureUnit(context);
 
                 return Dismissible(
                   key: Key(entry['id'].toString()),
@@ -1496,6 +2045,30 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],
+                            if (symptoms.isNotEmpty || temperature != null) ...[
+                              const SizedBox(height: 10),
+                              Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: [
+                                  if (temperature != null)
+                                    Chip(
+                                      avatar: const Icon(
+                                          Icons.thermostat_outlined,
+                                          size: 16),
+                                      label: Text(formatTemperature(
+                                        temperature,
+                                        unit: temperatureUnit,
+                                      )),
+                                    ),
+                                  ...symptoms.take(3).map(
+                                        (symptom) => Chip(
+                                          label: Text(symptom),
+                                        ),
+                                      ),
+                                ],
+                              ),
+                            ],
                           ],
                         ),
                       ),
@@ -1557,7 +2130,7 @@ class _StatsScreenState extends State<StatsScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     _loadEntries();
   }
 
@@ -1829,6 +2402,83 @@ class _StatsScreenState extends State<StatsScreen>
     );
   }
 
+  Widget _buildSymptomFrequency() {
+    if (_entries.isEmpty) {
+      return _buildEmptyState(
+          Icons.checklist, 'No data yet', 'Add entries to see symptoms');
+    }
+
+    final theme = Theme.of(context);
+    final counts = <String, int>{};
+    for (final entry in _entries) {
+      for (final symptom in readEntrySymptoms(entry)) {
+        counts[symptom] = (counts[symptom] ?? 0) + 1;
+      }
+      final custom = readCustomSymptoms(entry);
+      if (custom.isNotEmpty) {
+        counts[custom] = (counts[custom] ?? 0) + 1;
+      }
+    }
+
+    if (counts.isEmpty) {
+      return _buildEmptyState(Icons.checklist, 'No symptoms logged',
+          'Select symptoms in new entries to see frequency');
+    }
+
+    final rows = counts.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Symptom Frequency',
+                  style: theme.textTheme.titleLarge
+                      ?.copyWith(fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Most frequently selected symptoms across your entries.',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ...rows.map((row) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 14),
+                    child: Row(
+                      children: [
+                        Icon(Icons.check_circle_outline,
+                            color: theme.colorScheme.primary, size: 22),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child:
+                              Text(row.key, style: theme.textTheme.bodyMedium),
+                        ),
+                        Text(
+                          row.value.toString(),
+                          style: theme.textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildEmptyState(IconData icon, String title, String subtitle) {
     final theme = Theme.of(context);
     return Center(
@@ -1862,6 +2512,7 @@ class _StatsScreenState extends State<StatsScreen>
             Tab(icon: Icon(Icons.view_week), text: 'Week'),
             Tab(icon: Icon(Icons.show_chart), text: 'Trend'),
             Tab(icon: Icon(Icons.bar_chart), text: 'By Area'),
+            Tab(icon: Icon(Icons.checklist), text: 'Symptoms'),
           ],
         ),
       ),
@@ -1871,6 +2522,7 @@ class _StatsScreenState extends State<StatsScreen>
           _buildWeeklyOverview(),
           _buildTrendChart(),
           _buildAreaChart(),
+          _buildSymptomFrequency(),
         ],
       ),
     );
@@ -2136,15 +2788,26 @@ class _InsightsScreenState extends State<InsightsScreen> {
 
     final bodyAreas = <String, int>{};
     final moods = <String, int>{};
+    final symptoms = <String, int>{};
     for (final entry in _entries) {
       bodyAreas[entry['body_area']] = (bodyAreas[entry['body_area']] ?? 0) + 1;
       moods[entry['mood']] = (moods[entry['mood']] ?? 0) + 1;
+      for (final symptom in readEntrySymptoms(entry)) {
+        symptoms[symptom] = (symptoms[symptom] ?? 0) + 1;
+      }
+      final custom = readCustomSymptoms(entry);
+      if (custom.isNotEmpty) {
+        symptoms[custom] = (symptoms[custom] ?? 0) + 1;
+      }
     }
 
     final mostCommonArea =
         bodyAreas.entries.reduce((a, b) => a.value > b.value ? a : b).key;
     final mostCommonMood =
         moods.entries.reduce((a, b) => a.value > b.value ? a : b).key;
+    final mostCommonSymptom = symptoms.isEmpty
+        ? null
+        : symptoms.entries.reduce((a, b) => a.value > b.value ? a : b).key;
 
     final stats = [
       _StatItem(Icons.format_list_numbered, 'Total Entries',
@@ -2154,6 +2817,8 @@ class _InsightsScreenState extends State<InsightsScreen> {
       _StatItem(Icons.warning, 'Highest Pain', '$maxPain/10'),
       _StatItem(Icons.place, 'Most Common', mostCommonArea),
       _StatItem(Icons.mood, 'Most Common', mostCommonMood),
+      _StatItem(
+          Icons.checklist, 'Most Common', mostCommonSymptom ?? 'No symptoms'),
     ];
 
     return Card(
@@ -2240,12 +2905,24 @@ class _SettingsScreenState extends State<SettingsScreen>
     }
 
     final csvData = [
-      ['Date', 'Pain Level', 'Body Area', 'Mood', 'Notes'],
+      [
+        'Date',
+        'Pain Level',
+        'Body Area',
+        'Mood',
+        'Symptoms',
+        'Other Symptoms',
+        'Temperature (C)',
+        'Notes'
+      ],
       ...entries.map((e) => [
             e['timestamp'],
             e['pain_level'].toString(),
             e['body_area'],
             e['mood'],
+            readEntrySymptoms(e).join('; '),
+            readCustomSymptoms(e),
+            readTemperatureCelsius(e)?.toStringAsFixed(1) ?? '',
             e['notes'] ?? '',
           ]),
     ];
@@ -2279,13 +2956,27 @@ class _SettingsScreenState extends State<SettingsScreen>
                     pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
             pw.SizedBox(height: 20),
             pw.TableHelper.fromTextArray(
-              headers: ['Date', 'Pain', 'Area', 'Mood', 'Notes'],
+              headers: [
+                'Date',
+                'Pain',
+                'Area',
+                'Mood',
+                'Symptoms',
+                'Temp C',
+                'Notes'
+              ],
               data: entries
                   .map((e) => [
                         e['timestamp'].toString().substring(0, 16),
                         e['pain_level'].toString(),
                         e['body_area'].toString(),
                         e['mood'].toString(),
+                        [
+                          ...readEntrySymptoms(e),
+                          if (readCustomSymptoms(e).isNotEmpty)
+                            readCustomSymptoms(e),
+                        ].join(', '),
+                        readTemperatureCelsius(e)?.toStringAsFixed(1) ?? '',
                         (e['notes'] ?? '').toString(),
                       ])
                   .toList(),
@@ -2329,6 +3020,20 @@ class _SettingsScreenState extends State<SettingsScreen>
       await UserService.setUserName(result);
       setState(() => _userName = result);
     }
+  }
+
+  Future<void> _replayOnboarding() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => OnboardingScreen(
+          onComplete: () async {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setBool('onboardingComplete', true);
+            if (context.mounted) Navigator.of(context).pop();
+          },
+        ),
+      ),
+    );
   }
 
   @override
@@ -2419,6 +3124,20 @@ class _SettingsScreenState extends State<SettingsScreen>
                 onTap: _exportPDF,
               ),
             ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        Card(
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: theme.colorScheme.secondaryContainer,
+              child: Icon(Icons.play_circle_outline,
+                  color: theme.colorScheme.onSecondaryContainer),
+            ),
+            title: const Text('Replay onboarding'),
+            subtitle: const Text('Review app purpose, tracking, and privacy'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: _replayOnboarding,
           ),
         ),
         const SizedBox(height: 12),

@@ -21,6 +21,9 @@ type SymptomEntry = {
   body_area: string | null;
   mood: string | null;
   notes: string | null;
+  symptoms: string[] | null;
+  custom_symptoms: string | null;
+  temperature_celsius: number | null;
   occurred_at: string | null;
   updated_at: string | null;
   deleted_at: string | null;
@@ -119,7 +122,8 @@ async function fetchEntries(
 ): Promise<SymptomEntry[]> {
   const since = new Date(Date.now() - (range === "30d" ? 30 : 7) * 86400000).toISOString();
   const params = new URLSearchParams({
-    select: "id,client_id,pain_level,body_area,mood,notes,occurred_at,updated_at,deleted_at",
+    select:
+      "id,client_id,pain_level,body_area,mood,notes,symptoms,custom_symptoms,temperature_celsius,occurred_at,updated_at,deleted_at",
     deleted_at: "is.null",
     occurred_at: `gte.${since}`,
     order: "occurred_at.desc",
@@ -162,6 +166,10 @@ function computeStats(entries: SymptomEntry[]) {
     ),
     bodyAreaFrequency: frequency(entries, (entry) => entry.body_area),
     moodFrequency: frequency(entries, (entry) => entry.mood),
+    symptomFrequency: symptomFrequency(entries),
+    temperatureReadingsCelsius: entries
+      .map((entry) => entry.temperature_celsius)
+      .filter((value): value is number => typeof value === "number"),
     redFlags: redFlags(entries),
     trend: trend(entries),
   };
@@ -179,6 +187,7 @@ function frequency(entries: SymptomEntry[], selector: (entry: SymptomEntry) => s
 function redFlags(entries: SymptomEntry[]) {
   const terms = [
     "chest pain",
+    "chest discomfort",
     "shortness of breath",
     "faint",
     "numbness",
@@ -189,15 +198,39 @@ function redFlags(entries: SymptomEntry[]) {
   const flags = new Set<string>();
   for (const entry of entries) {
     const notes = (entry.notes ?? "").toLowerCase();
+    const symptoms = [...(entry.symptoms ?? []), entry.custom_symptoms ?? ""]
+      .join(" ")
+      .toLowerCase();
     if ((entry.pain_level ?? 0) >= 9) flags.add("Very high pain was recorded.");
-    if ((entry.body_area ?? "").toLowerCase().includes("chest")) {
+    if (
+      (entry.body_area ?? "").toLowerCase().includes("chest") ||
+      symptoms.includes("chest")
+    ) {
       flags.add("Chest symptoms were recorded.");
     }
+    if ((entry.temperature_celsius ?? 0) >= 39.4) {
+      flags.add("Very high fever was recorded.");
+    }
     for (const term of terms) {
-      if (notes.includes(term)) flags.add(`Urgent symptom language was found: "${term}".`);
+      if (notes.includes(term) || symptoms.includes(term)) {
+        flags.add(`Urgent symptom language was found: "${term}".`);
+      }
     }
   }
   return [...flags];
+}
+
+function symptomFrequency(entries: SymptomEntry[]) {
+  return entries.reduce<Record<string, number>>((counts, entry) => {
+    for (const symptom of entry.symptoms ?? []) {
+      if (!symptom) continue;
+      counts[symptom] = (counts[symptom] ?? 0) + 1;
+    }
+    if (entry.custom_symptoms) {
+      counts[entry.custom_symptoms] = (counts[entry.custom_symptoms] ?? 0) + 1;
+    }
+    return counts;
+  }, {});
 }
 
 function trend(entries: SymptomEntry[]) {
@@ -219,6 +252,10 @@ function average(values: number[]) {
 
 function localInsight(entries: SymptomEntry[], stats: Record<string, unknown>, range: string) {
   const redFlagList = stats.redFlags as string[];
+  const symptoms = stats.symptomFrequency as Record<string, number> | undefined;
+  const commonSymptom = symptoms
+    ? Object.entries(symptoms).sort((a, b) => b[1] - a[1])[0]?.[0]
+    : null;
   return {
     summary:
       entries.length === 0
@@ -228,6 +265,7 @@ function localInsight(entries: SymptomEntry[], stats: Record<string, unknown>, r
       stats.averagePain == null
         ? "Average pain is not available yet."
         : `Average pain is ${(stats.averagePain as number).toFixed(1)}/10.`,
+      commonSymptom ? `Most common symptom: ${commonSymptom}.` : "No symptom frequency yet.",
     ],
     education: [
       "Consistent daily logging can make symptom patterns easier to discuss with a clinician.",
@@ -259,6 +297,9 @@ async function runInsightModel(
     body_area: entry.body_area,
     mood: entry.mood,
     notes: entry.notes,
+    symptoms: entry.symptoms,
+    custom_symptoms: entry.custom_symptoms,
+    temperature_celsius: entry.temperature_celsius,
     occurred_at: entry.occurred_at,
   }));
 

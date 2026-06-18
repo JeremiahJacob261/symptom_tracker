@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'data/symptom_storage.dart';
 import 'models/symptom_entry.dart';
 
+@Deprecated('Use HomeScreen in main.dart; this legacy screen is not routed.')
 class LogScreen extends StatefulWidget {
   const LogScreen({super.key});
 

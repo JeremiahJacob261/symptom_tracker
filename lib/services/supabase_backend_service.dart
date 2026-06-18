@@ -10,7 +10,8 @@ class SupabaseBackendService {
   SupabaseBackendService._(this.client);
 
   static const supabaseUrl = "https://pggvcuchcrytifxnzhef.supabase.co";
-  static const publishableKey ="sb_publishable_HIltu5fP_Y4YU-mhgABncg_wlmIu5jx";
+  static const publishableKey =
+      "sb_publishable_HIltu5fP_Y4YU-mhgABncg_wlmIu5jx";
   static const photoBucket = 'mar_symptom_photos';
 
   final SupabaseClient client;
@@ -70,6 +71,9 @@ class SupabaseBackendService {
             'body_area': local['body_area'],
             'mood': local['mood'],
             'notes': local['notes'],
+            'symptoms': _decodeSymptoms(local['symptoms_json']),
+            'custom_symptoms': local['custom_symptoms'],
+            'temperature_celsius': local['temperature_celsius'],
             'photo_path': photoPath,
             'occurred_at': local['timestamp'],
             'updated_at': local['updated_at'],
@@ -243,5 +247,25 @@ class SupabaseBackendService {
     } catch (_) {
       return null;
     }
+  }
+
+  List<String> _decodeSymptoms(dynamic value) {
+    if (value == null) return const [];
+    if (value is List) return value.map((item) => item.toString()).toList();
+    final raw = value.toString().trim();
+    if (raw.isEmpty) return const [];
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is List) {
+        return decoded.map((item) => item.toString()).toList();
+      }
+    } catch (_) {
+      return raw
+          .split(',')
+          .map((item) => item.trim())
+          .where((item) => item.isNotEmpty)
+          .toList();
+    }
+    return const [];
   }
 }

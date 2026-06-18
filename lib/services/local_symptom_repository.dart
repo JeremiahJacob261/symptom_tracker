@@ -37,7 +37,7 @@ class LocalSymptomRepository {
     final path = p.join(await getDatabasesPath(), 'symptom_tracker.db');
     return openDatabase(
       path,
-      version: 2,
+      version: 3,
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE entries (
@@ -48,6 +48,9 @@ class LocalSymptomRepository {
             body_area TEXT,
             mood TEXT,
             notes TEXT,
+            symptoms_json TEXT,
+            custom_symptoms TEXT,
+            temperature_celsius REAL,
             photo_path TEXT,
             photo_bytes_base64 TEXT,
             timestamp TEXT,
@@ -95,8 +98,26 @@ class LocalSymptomRepository {
           await _backfillClientIds(db, 'medications');
           await _backfillClientIds(db, 'appointments');
         }
+        if (oldVersion < 3) {
+          await _addEntryHealthColumns(db);
+        }
       },
     );
+  }
+
+  Future<void> _addEntryHealthColumns(Database db) async {
+    final existing = await db.rawQuery('PRAGMA table_info(entries)');
+    final names = existing.map((row) => row['name'] as String).toSet();
+
+    Future<void> add(String column, String definition) async {
+      if (!names.contains(column)) {
+        await db.execute('ALTER TABLE entries ADD COLUMN $column $definition');
+      }
+    }
+
+    await add('symptoms_json', 'TEXT');
+    await add('custom_symptoms', 'TEXT');
+    await add('temperature_celsius', 'REAL');
   }
 
   Future<void> _addSyncColumns(Database db, String table) async {
@@ -211,6 +232,9 @@ class LocalSymptomRepository {
       'body_area': remote['body_area'],
       'mood': remote['mood'],
       'notes': remote['notes'],
+      'symptoms_json': jsonEncode(remote['symptoms'] ?? const []),
+      'custom_symptoms': remote['custom_symptoms'],
+      'temperature_celsius': remote['temperature_celsius'],
       'photo_path': remote['photo_path'],
       'photo_bytes_base64': null,
       'timestamp': remote['occurred_at'],

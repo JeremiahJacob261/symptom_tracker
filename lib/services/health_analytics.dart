@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
 
+import '../data/symptom_taxonomy.dart';
+
 class WeeklyStats {
   const WeeklyStats({
     required this.averagePainThisWeek,
@@ -185,6 +187,7 @@ class HealthAnalytics {
   static List<String> redFlags(List<Map<String, dynamic>> entries) {
     const urgentTerms = [
       'chest pain',
+      'chest discomfort',
       'shortness of breath',
       'faint',
       'fainted',
@@ -200,14 +203,22 @@ class HealthAnalytics {
       final pain = readPainLevel(entry);
       final notes = (entry['notes'] ?? '').toString().toLowerCase();
       final area = (entry['body_area'] ?? '').toString().toLowerCase();
+      final symptoms = [
+        ...readEntrySymptoms(entry),
+        readCustomSymptoms(entry),
+      ].join(' ').toLowerCase();
+      final temperature = readTemperatureCelsius(entry);
       if (pain != null && pain >= 9) {
         flags.add('Very high pain was recorded.');
       }
-      if (area.contains('chest')) {
+      if (area.contains('chest') || symptoms.contains('chest')) {
         flags.add('Chest symptoms were recorded.');
       }
+      if (temperature != null && temperature >= 39.4) {
+        flags.add('Very high fever was recorded.');
+      }
       for (final term in urgentTerms) {
-        if (notes.contains(term)) {
+        if (notes.contains(term) || symptoms.contains(term)) {
           flags.add('Urgent symptom language was found: "$term".');
         }
       }
@@ -240,12 +251,17 @@ class HealthAnalytics {
     final avg = averagePain(entries);
     final commonArea = mostCommonValue(entries, 'body_area');
     final commonMood = mostCommonValue(entries, 'mood');
+    final symptomCounts = symptomFrequency(entries);
+    final commonSymptom = symptomCounts.isEmpty
+        ? null
+        : symptomCounts.entries.reduce((a, b) => a.value >= b.value ? a : b);
     final flags = redFlags(entries);
 
     final patterns = <String>[
       if (avg != null) 'Average logged pain is ${avg.toStringAsFixed(1)}/10.',
       if (commonArea != null) 'Most common body area: $commonArea.',
       if (commonMood != null) 'Most common mood: $commonMood.',
+      if (commonSymptom != null) 'Most common symptom: ${commonSymptom.key}.',
       if (stats.averagePainThisWeek != null)
         'This week average pain: ${stats.averagePainThisWeek!.toStringAsFixed(1)}/10.',
       if (stats.averagePainLastWeek != null)
@@ -285,8 +301,25 @@ class HealthAnalytics {
       'dayOfWeekFrequency': dayOfWeekFrequency(entries),
       'bodyAreaFrequency': valueFrequency(entries, 'body_area'),
       'moodFrequency': valueFrequency(entries, 'mood'),
+      'symptomFrequency': symptomFrequency(entries),
+      'temperatureReadingsCelsius':
+          entries.map(readTemperatureCelsius).whereType<double>().toList(),
       'redFlags': redFlags(entries),
     };
+  }
+
+  static Map<String, int> symptomFrequency(List<Map<String, dynamic>> entries) {
+    final counts = <String, int>{};
+    for (final entry in entries) {
+      for (final symptom in readEntrySymptoms(entry)) {
+        counts[symptom] = (counts[symptom] ?? 0) + 1;
+      }
+      final custom = readCustomSymptoms(entry);
+      if (custom.isNotEmpty) {
+        counts[custom] = (counts[custom] ?? 0) + 1;
+      }
+    }
+    return counts;
   }
 
   static DateTime _startOfWeek(DateTime date) {
