@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
@@ -24,8 +25,15 @@ Future<void> main() async {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
   }
-  await AppBackend.bootstrap();
   runApp(const MyApp());
+  unawaited(
+    AppBackend.bootstrap().catchError((Object error, StackTrace stackTrace) {
+      if (kDebugMode) {
+        debugPrint('Backend bootstrap failed after app launch: $error');
+        debugPrintStack(stackTrace: stackTrace);
+      }
+    }),
+  );
 }
 
 class ThemeNotifier extends ChangeNotifier {
