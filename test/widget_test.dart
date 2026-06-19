@@ -158,6 +158,16 @@ void main() {
     expect(jsonDecode(saved['symptoms_json'].toString()), contains('Fever'));
   });
 
+  test('web storage map shape does not crash repository reads', () async {
+    SharedPreferences.setMockInitialValues({'mar_local_entries': '{}'});
+    final repository = LocalSymptomRepository();
+    await repository.init();
+
+    final entries = await repository.getEntries();
+
+    expect(entries, isEmpty);
+  });
+
   testWidgets('timeline detail opens from entry tap',
       (WidgetTester tester) async {
     SharedPreferences.setMockInitialValues({});

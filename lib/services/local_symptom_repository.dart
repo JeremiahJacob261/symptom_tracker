@@ -412,10 +412,44 @@ class LocalSymptomRepository {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(_webKey(table));
     if (raw == null || raw.isEmpty) return [];
-    final decoded = jsonDecode(raw) as List<dynamic>;
-    return decoded
-        .map((item) => Map<String, dynamic>.from(item as Map))
-        .toList();
+    try {
+      final decoded = jsonDecode(raw);
+      return _rowsFromDecodedWebValue(decoded, table);
+    } catch (_) {
+      return [];
+    }
+  }
+
+  List<Map<String, dynamic>> _rowsFromDecodedWebValue(
+    dynamic decoded,
+    String table,
+  ) {
+    if (decoded is List) {
+      return decoded
+          .whereType<Map>()
+          .map((item) => Map<String, dynamic>.from(item))
+          .toList();
+    }
+
+    if (decoded is Map) {
+      final map = Map<String, dynamic>.from(decoded);
+      final nestedRows =
+          map[table] ?? map['rows'] ?? map['data'] ?? map['items'];
+      if (nestedRows is List) {
+        return nestedRows
+            .whereType<Map>()
+            .map((item) => Map<String, dynamic>.from(item))
+            .toList();
+      }
+
+      if (map.containsKey('id') ||
+          map.containsKey('client_id') ||
+          map.containsKey('timestamp')) {
+        return [map];
+      }
+    }
+
+    return [];
   }
 
   Future<void> _writeWebRows(
