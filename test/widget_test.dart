@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import 'package:symptom_tracker/data/symptom_taxonomy.dart';
 import 'package:symptom_tracker/main.dart';
 import 'package:symptom_tracker/services/app_backend.dart';
 import 'package:symptom_tracker/services/local_symptom_repository.dart';
@@ -37,7 +34,7 @@ void main() {
     await tester.tap(find.text('Get started'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Log symptoms'), findsOneWidget);
+    expect(find.text('How are you feeling today?'), findsOneWidget);
   });
 
   testWidgets('returning user sees redesigned log screen',
@@ -48,17 +45,19 @@ void main() {
     await tester.pump(const Duration(milliseconds: 800));
     await tester.pumpAndSettle();
 
-    expect(
-      find.text(
-          'Record symptoms, mood, and body area to track health trends over time.'),
-      findsOneWidget,
-    );
+    expect(find.text('How are you feeling today?'), findsOneWidget);
     expect(find.text('Pain Level'), findsOneWidget);
-    expect(find.text('Symptoms'), findsOneWidget);
-    expect(find.text('Log'), findsOneWidget);
+    expect(find.text('Body Area'), findsOneWidget);
+    await tester.dragUntilVisible(
+      find.text('Mood'),
+      find.byType(CustomScrollView),
+      const Offset(0, -240),
+    );
+    expect(find.text('Mood'), findsOneWidget);
+    expect(find.text('Home'), findsOneWidget);
   });
 
-  testWidgets('log screen saves categorized symptoms and temperature',
+  testWidgets('log screen saves preview-visible fields',
       (WidgetTester tester) async {
     tester.view.physicalSize = const Size(900, 1400);
     tester.view.devicePixelRatio = 1;
@@ -71,41 +70,6 @@ void main() {
 
     await tester.pumpWidget(const MyApp());
     await tester.pump(const Duration(milliseconds: 800));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text('General'));
-    await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Fever'));
-    await tester.tap(
-      find.ancestor(of: find.text('Fever'), matching: find.byType(FilterChip)),
-    );
-    await tester.pumpAndSettle();
-
-    final otherSymptomsField = find.byWidgetPredicate(
-      (widget) =>
-          widget is TextField &&
-          widget.decoration?.labelText == 'Other symptoms',
-    );
-    await tester.dragUntilVisible(
-      otherSymptomsField,
-      find.byType(CustomScrollView),
-      const Offset(0, -240),
-    );
-    await tester.enterText(otherSymptomsField, 'Light sensitivity');
-
-    final temperatureField = find.byWidgetPredicate(
-      (widget) =>
-          widget is TextField &&
-          (widget.decoration?.hintText == '98.6' ||
-              widget.decoration?.hintText == '37.0'),
-    );
-    await tester.dragUntilVisible(
-      temperatureField,
-      find.byType(CustomScrollView),
-      const Offset(0, -240),
-    );
-    await tester.enterText(temperatureField, '98.6');
-    await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.pumpAndSettle();
 
     await tester.dragUntilVisible(
@@ -152,10 +116,10 @@ void main() {
     final saved = entries.firstWhere(
       (entry) => entry['notes'] == 'Redesign save test note',
     );
-    expect(readEntrySymptoms(saved), contains('Fever'));
-    expect(saved['custom_symptoms'], 'Light sensitivity');
-    expect(saved['temperature_celsius'], isNotNull);
-    expect(jsonDecode(saved['symptoms_json'].toString()), contains('Fever'));
+    expect(saved['body_area'], 'Head');
+    expect(saved['mood'], 'Calm');
+    expect(saved['custom_symptoms'], '');
+    expect(saved['temperature_celsius'], isNull);
   });
 
   test('web storage map shape does not crash repository reads', () async {
@@ -193,7 +157,8 @@ void main() {
     expect(find.text(uniqueNote), findsWidgets);
   });
 
-  testWidgets('insights screen shows fallback AI sections', (tester) async {
+  testWidgets('insights screen auto shows combined AI analysis',
+      (tester) async {
     SharedPreferences.setMockInitialValues({});
     await AppBackend.repository.init();
     await DatabaseHelper.insertEntry({
@@ -207,8 +172,9 @@ void main() {
     await tester.pumpWidget(const MaterialApp(home: InsightsScreen()));
     await tester.pumpAndSettle();
 
-    expect(find.text('Pattern Insights'), findsOneWidget);
-    expect(find.text('Educational Notes'), findsOneWidget);
-    expect(find.text('When to Seek Care'), findsOneWidget);
+    expect(find.text('AI Analysis'), findsOneWidget);
+    expect(find.text('Health Pattern Analysis'), findsOneWidget);
+    expect(find.text('Quick Stats'), findsOneWidget);
+    expect(find.byTooltip('Generate AI insight'), findsNothing);
   });
 }

@@ -102,34 +102,36 @@ class MyApp extends StatelessWidget {
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: const ColorScheme.light(
-        primary: Color(0xFF007C78),
+        primary: Color(0xFF009688),
         onPrimary: Colors.white,
-        primaryContainer: Color(0xFFC7F0EA),
-        onPrimaryContainer: Color(0xFF063F3D),
-        secondary: Color(0xFF4B83A6),
+        primaryContainer: Color(0xFFB2DFDB),
+        onPrimaryContainer: Color(0xFF212121),
+        secondary: Color(0xFF00897B),
         onSecondary: Colors.white,
-        secondaryContainer: Color(0xFFD7EAF6),
-        onSecondaryContainer: Color(0xFF14384F),
-        tertiary: Color(0xFFE6A23C),
-        onTertiary: Color(0xFF2D1B00),
+        secondaryContainer: Color(0xFF80CBC4),
+        onSecondaryContainer: Color(0xFF212121),
+        tertiary: Color(0xFFFF9800),
+        onTertiary: Colors.white,
         surface: Color(0xFFFFFFFF),
-        onSurface: Color(0xFF172121),
-        onSurfaceVariant: Color(0xFF5D6A6A),
-        error: Color(0xFFC62828),
+        onSurface: Color(0xFF212121),
+        onSurfaceVariant: Color(0xFF757575),
+        error: Color(0xFFD32F2F),
         onError: Colors.white,
-        outline: Color(0xFFC4D0D0),
+        outline: Color(0xFFE0E0E0),
       ),
-      scaffoldBackgroundColor: const Color(0xFFF6FAF9),
+      scaffoldBackgroundColor: const Color(0xFFFAFAFA),
       cardTheme: CardThemeData(
         color: const Color(0xFFFFFFFF),
-        elevation: 1,
-        shadowColor: Colors.black.withValues(alpha: 0.08),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 2,
+        shadowColor: Colors.black.withValues(alpha: 0.10),
+        margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFFF6FAF9),
-        foregroundColor: Color(0xFF172121),
-        elevation: 0,
+        backgroundColor: Color(0xFFFFFFFF),
+        foregroundColor: Color(0xFF212121),
+        elevation: 1,
+        shadowColor: Color(0x1A000000),
         centerTitle: true,
         titleTextStyle: TextStyle(
           fontSize: 20,
@@ -139,16 +141,16 @@ class MyApp extends StatelessWidget {
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: Color(0xFFFFFFFF),
-        selectedItemColor: Color(0xFF007C78),
-        unselectedItemColor: Color(0xFF5D6A6A),
+        selectedItemColor: Color(0xFF009688),
+        unselectedItemColor: Color(0xFF757575),
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),
       sliderTheme: SliderThemeData(
-        activeTrackColor: const Color(0xFF007C78),
-        inactiveTrackColor: const Color(0xFFE0E0E0),
-        thumbColor: const Color(0xFF007C78),
-        overlayColor: const Color(0xFF007C78).withValues(alpha: 0.12),
+        activeTrackColor: const Color(0xFF009688),
+        inactiveTrackColor: const Color(0xFFF5F5F5),
+        thumbColor: const Color(0xFF009688),
+        overlayColor: const Color(0xFF009688).withValues(alpha: 0.12),
         trackHeight: 8,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12),
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 24),
@@ -164,7 +166,7 @@ class MyApp extends StatelessWidget {
         secondaryLabelStyle: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF063F3D)),
+            color: Color(0xFF212121)),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
@@ -181,29 +183,29 @@ class MyApp extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF007C78), width: 2),
+          borderSide: const BorderSide(color: Color(0xFF009688), width: 2),
         ),
         contentPadding: const EdgeInsets.all(16),
         hintStyle: const TextStyle(color: Color(0xFF9E9E9E), fontSize: 14),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF007C78),
+          backgroundColor: const Color(0xFF009688),
           foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 56),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           elevation: 0,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: const Color(0xFF007C78),
+          foregroundColor: const Color(0xFF009688),
           minimumSize: const Size(double.infinity, 48),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          side: const BorderSide(color: Color(0xFF007C78)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          side: const BorderSide(color: Color(0xFFE0E0E0)),
           textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
       ),
@@ -260,34 +262,36 @@ class MyApp extends StatelessWidget {
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: const ColorScheme.dark(
-        primary: Color(0xFF72D3C9),
-        onPrimary: Color(0xFF053A38),
-        primaryContainer: Color(0xFF0E504D),
-        onPrimaryContainer: Color(0xFFC7F0EA),
-        secondary: Color(0xFF9CCAE4),
-        onSecondary: Color(0xFF113448),
-        secondaryContainer: Color(0xFF224D66),
-        onSecondaryContainer: Color(0xFFD7EAF6),
-        tertiary: Color(0xFFF0B45B),
-        onTertiary: Color(0xFF2D1B00),
-        surface: Color(0xFF101818),
+        primary: Color(0xFF4DB6AC),
+        onPrimary: Color(0xFF00332C),
+        primaryContainer: Color(0xFF004D40),
+        onPrimaryContainer: Color(0xFFFFFFFF),
+        secondary: Color(0xFF80CBC4),
+        onSecondary: Color(0xFF00332C),
+        secondaryContainer: Color(0xFF00695C),
+        onSecondaryContainer: Color(0xFFFFFFFF),
+        tertiary: Color(0xFFFF9800),
+        onTertiary: Colors.white,
+        surface: Color(0xFF121212),
         onSurface: Color(0xFFFFFFFF),
         onSurfaceVariant: Color(0xFFBDBDBD),
-        error: Color(0xFFEF5350),
+        error: Color(0xFFD32F2F),
         onError: Colors.black,
-        outline: Color(0xFF405454),
+        outline: Color(0xFF333333),
       ),
-      scaffoldBackgroundColor: const Color(0xFF0B1111),
+      scaffoldBackgroundColor: const Color(0xFF000000),
       cardTheme: CardThemeData(
-        color: const Color(0xFF1E1E1E),
+        color: const Color(0xFF121212),
         elevation: 2,
         shadowColor: Colors.black.withValues(alpha: 0.3),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xFF121212),
         foregroundColor: Color(0xFFFFFFFF),
-        elevation: 0,
+        elevation: 1,
+        shadowColor: Color(0x33000000),
         centerTitle: true,
         titleTextStyle: TextStyle(
           fontSize: 20,
@@ -304,7 +308,7 @@ class MyApp extends StatelessWidget {
       ),
       sliderTheme: SliderThemeData(
         activeTrackColor: const Color(0xFF4DB6AC),
-        inactiveTrackColor: const Color(0xFF424242),
+        inactiveTrackColor: const Color(0xFF1E1E1E),
         thumbColor: const Color(0xFF4DB6AC),
         overlayColor: const Color(0xFF4DB6AC).withValues(alpha: 0.12),
         trackHeight: 8,
@@ -312,7 +316,7 @@ class MyApp extends StatelessWidget {
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 24),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: const Color(0xFF2C2C2C),
+        backgroundColor: const Color(0xFF1E1E1E),
         selectedColor: const Color(0xFF004D40),
         labelStyle: const TextStyle(
             fontSize: 14,
@@ -327,7 +331,7 @@ class MyApp extends StatelessWidget {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: const Color(0xFF2C2C2C),
+        fillColor: const Color(0xFF1E1E1E),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
@@ -349,7 +353,7 @@ class MyApp extends StatelessWidget {
           foregroundColor: const Color(0xFF00332C),
           minimumSize: const Size(double.infinity, 56),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           elevation: 0,
         ),
@@ -359,7 +363,7 @@ class MyApp extends StatelessWidget {
           foregroundColor: const Color(0xFF4DB6AC),
           minimumSize: const Size(double.infinity, 48),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           side: const BorderSide(color: Color(0xFF4DB6AC)),
           textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
@@ -730,9 +734,9 @@ class _MainScreenState extends State<MainScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildNavItem(Icons.home_outlined, Icons.home, 'Log', 0),
+                _buildNavItem(Icons.home_outlined, Icons.home, 'Home', 0),
                 _buildNavItem(
-                    Icons.history_outlined, Icons.history, 'Timeline', 1),
+                    Icons.history_outlined, Icons.history, 'History', 1),
                 _buildNavItem(
                     Icons.bar_chart_outlined, Icons.bar_chart, 'Stats', 2),
                 _buildNavItem(
@@ -758,13 +762,7 @@ class _MainScreenState extends State<MainScreen> {
       onTap: () => setState(() => _currentIndex = index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.15)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -882,14 +880,7 @@ class _HomeScreenState extends State<HomeScreen> {
     'Back',
     'Lower Back',
     'Arm',
-    'Elbow',
-    'Wrist',
-    'Hand',
-    'Hip',
     'Leg',
-    'Knee',
-    'Ankle',
-    'Foot'
   ];
 
   final Map<String, IconData> _moodIcons = {
@@ -910,8 +901,6 @@ class _HomeScreenState extends State<HomeScreen> {
     'Tired',
     'Stressed',
     'Anxious',
-    'Sad',
-    'Irritable'
   ];
 
   @override
@@ -979,15 +968,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return theme.brightness == Brightness.dark
         ? const Color(0xFF2B3035)
         : const Color(0xFFFFFFFF);
-  }
-
-  BorderSide _symptomChipBorder(ThemeData theme, bool isSelected) {
-    final color = isSelected
-        ? theme.colorScheme.primary
-        : theme.colorScheme.outline.withValues(
-            alpha: theme.brightness == Brightness.dark ? 0.9 : 0.7,
-          );
-    return BorderSide(color: color);
   }
 
   Future<void> _pickImage() async {
@@ -1097,80 +1077,280 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return CustomScrollView(
       slivers: [
-        // SliverAppBar with greeting
-        SliverAppBar(
-          expandedHeight: 200,
-          floating: false,
-          pinned: true,
-          elevation: 0,
-          backgroundColor: theme.scaffoldBackgroundColor,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    theme.colorScheme.primary.withValues(alpha: 0.1),
-                    theme.colorScheme.primary.withValues(alpha: 0.05),
-                    Colors.transparent,
+        SliverToBoxAdapter(
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  theme.colorScheme.primaryContainer,
+                  theme.colorScheme.surface,
+                ],
+              ),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _userName == null ? 'Hello!' : 'Hello, $_userName!',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'How are you feeling today?',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                IconButton(
+                  onPressed: _showNameDialog,
+                  icon: Icon(
+                    _userName != null ? Icons.person : Icons.person_add,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            _userName != null
-                                ? 'Log today, ${_userName ?? ''}'
-                                : 'Log symptoms',
-                            style: theme.textTheme.headlineLarge?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: theme.colorScheme.onSurface,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          SizedBox(
-                            width: MediaQuery.sizeOf(context).width * 0.72,
-                            child: Text(
-                              'Record symptoms, mood, and body area to track health trends over time.',
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      IconButton(
-                        onPressed: _showNameDialog,
-                        icon: Icon(
-                          _userName != null ? Icons.person : Icons.person_add,
-                          color: theme.colorScheme.onSurfaceVariant,
+                      Text(
+                        'Pain Level',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
                         ),
-                        iconSize: 24,
-                        constraints:
-                            const BoxConstraints(minWidth: 40, minHeight: 40),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: painColor.withValues(alpha: 0.18),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          _getPainLabel(_painLevel),
+                          style: TextStyle(
+                            color: painColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SliderTheme(
+                          data: theme.sliderTheme.copyWith(
+                            activeTrackColor: painColor,
+                            thumbColor: painColor,
+                          ),
+                          child: Slider(
+                            value: _painLevel,
+                            min: 0,
+                            max: 10,
+                            divisions: 10,
+                            onChanged: (value) =>
+                                setState(() => _painLevel = value),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              painColor,
+                              painColor.withValues(alpha: 0.7),
+                            ],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: painColor.withValues(alpha: 0.4),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            _painLevel.round().toString(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('0', style: theme.textTheme.bodySmall),
+                      Text('10', style: theme.textTheme.bodySmall),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
         ),
-
-        // Pain Level Card
         SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Body Area',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: _bodyAreas.map((area) {
+                      final isSelected = _selectedBodyArea == area;
+                      return ChoiceChip(
+                        label: Text(area),
+                        selected: isSelected,
+                        showCheckmark: false,
+                        backgroundColor:
+                            _symptomChipBackgroundColor(theme, false),
+                        selectedColor: _symptomChipBackgroundColor(theme, true),
+                        side: BorderSide.none,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        labelStyle: TextStyle(
+                          color: _symptomChipForegroundColor(
+                            theme,
+                            isSelected,
+                          ),
+                          fontWeight:
+                              isSelected ? FontWeight.w600 : FontWeight.w400,
+                        ),
+                        onSelected: (_) =>
+                            setState(() => _selectedBodyArea = area),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Mood',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: _moods.map((mood) {
+                      final isSelected = _selectedMood == mood;
+                      final labelColor =
+                          _symptomChipForegroundColor(theme, isSelected);
+                      return ChoiceChip(
+                        avatar: Icon(
+                          _moodIcons[mood],
+                          size: 16,
+                          color: labelColor,
+                        ),
+                        label: Text(mood),
+                        selected: isSelected,
+                        showCheckmark: false,
+                        backgroundColor:
+                            _symptomChipBackgroundColor(theme, false),
+                        selectedColor: _symptomChipBackgroundColor(theme, true),
+                        side: BorderSide.none,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        labelStyle: TextStyle(
+                          color: labelColor,
+                          fontWeight:
+                              isSelected ? FontWeight.w600 : FontWeight.w400,
+                        ),
+                        onSelected: (_) => setState(() => _selectedMood = mood),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Notes',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: _notesController,
+                    maxLines: 4,
+                    decoration: const InputDecoration(
+                      hintText:
+                          'Add any additional details about how you feel...',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        if (_photoPath != null)
+          SliverToBoxAdapter(
             child: Card(
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -1181,485 +1361,46 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Pain Level',
-                          style: theme.textTheme.titleLarge?.copyWith(
+                          'Photo Attached',
+                          style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: painColor.withValues(alpha: 0.15),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            _getPainLabel(_painLevel),
-                            style: TextStyle(
-                              color: painColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                            ),
-                          ),
+                        IconButton(
+                          onPressed: () => setState(() {
+                            _photoPath = null;
+                            _photoBytesBase64 = null;
+                            _photoPreviewBytes = null;
+                          }),
+                          icon: const Icon(Icons.delete_outline),
                         ),
                       ],
-                    ),
-                    const SizedBox(height: 24),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: SliderTheme(
-                            data: theme.sliderTheme.copyWith(
-                              activeTrackColor: painColor,
-                              thumbColor: painColor,
-                            ),
-                            child: Slider(
-                              value: _painLevel,
-                              min: 0,
-                              max: 10,
-                              divisions: 10,
-                              onChanged: (value) =>
-                                  setState(() => _painLevel = value),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                painColor,
-                                painColor.withValues(alpha: 0.7),
-                              ],
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: painColor.withValues(alpha: 0.4),
-                                blurRadius: 10,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Center(
-                            child: Text(
-                              _painLevel.round().toString(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('0', style: theme.textTheme.bodySmall),
-                        Text('10', style: theme.textTheme.bodySmall),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-
-        // Symptom Categories Card
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Symptoms',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Choose all symptoms you are experiencing today.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
                     ),
                     const SizedBox(height: 12),
-                    ...symptomCategories.map((category) {
-                      return Theme(
-                        data: theme.copyWith(dividerColor: Colors.transparent),
-                        child: ExpansionTile(
-                          tilePadding: EdgeInsets.zero,
-                          childrenPadding: const EdgeInsets.only(bottom: 8),
-                          title: Text(
-                            category.name,
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: kIsWeb && _photoPreviewBytes != null
+                          ? Image.memory(
+                              _photoPreviewBytes!,
+                              height: 200,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.file(
+                              File(_photoPath!),
+                              height: 200,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
                             ),
-                          ),
-                          subtitle: Text(
-                            '${category.symptoms.length} common symptoms',
-                            style: theme.textTheme.bodySmall,
-                          ),
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Wrap(
-                                spacing: 8,
-                                runSpacing: 8,
-                                children: category.symptoms.map((symptom) {
-                                  final isSelected =
-                                      _selectedSymptoms.contains(symptom);
-                                  final labelColor =
-                                      _symptomChipForegroundColor(
-                                          theme, isSelected);
-                                  return FilterChip(
-                                    backgroundColor:
-                                        _symptomChipBackgroundColor(
-                                            theme, false),
-                                    selectedColor: _symptomChipBackgroundColor(
-                                        theme, true),
-                                    checkmarkColor:
-                                        theme.colorScheme.onPrimaryContainer,
-                                    side: _symptomChipBorder(theme, isSelected),
-                                    labelStyle: TextStyle(
-                                      color: labelColor,
-                                      fontWeight: isSelected
-                                          ? FontWeight.w600
-                                          : FontWeight.w500,
-                                    ),
-                                    label: Text(symptom),
-                                    selected: isSelected,
-                                    onSelected: (selected) => setState(() {
-                                      if (selected) {
-                                        _selectedSymptoms.add(symptom);
-                                      } else {
-                                        _selectedSymptoms.remove(symptom);
-                                      }
-                                    }),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
-                    const SizedBox(height: 12),
-                    TextField(
-                      controller: _customSymptomsController,
-                      decoration: const InputDecoration(
-                        labelText: 'Other symptoms',
-                        hintText: 'Add anything not listed above',
-                        prefixIcon: Icon(Icons.note_add_outlined),
-                      ),
                     ),
                   ],
                 ),
               ),
             ),
           ),
-        ),
-
-        // Temperature Card
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Body Temperature',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Optional, but useful when fever or chills are present.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: _temperatureController,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                            ),
-                            decoration: InputDecoration(
-                              hintText:
-                                  _temperatureUnit == 'F' ? '98.6' : '37.0',
-                              prefixIcon: const Icon(Icons.thermostat_outlined),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        SegmentedButton<String>(
-                          segments: const [
-                            ButtonSegment(value: 'C', label: Text('C')),
-                            ButtonSegment(value: 'F', label: Text('F')),
-                          ],
-                          selected: {_temperatureUnit},
-                          onSelectionChanged: (value) => setState(
-                            () => _temperatureUnit = value.first,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-
-        // Body Area Card
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Body Area',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Select where you are experiencing symptoms.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: _bodyAreas.map((area) {
-                        final isSelected = _selectedBodyArea == area;
-                        final labelColor =
-                            _symptomChipForegroundColor(theme, isSelected);
-                        return ChoiceChip(
-                          backgroundColor:
-                              _symptomChipBackgroundColor(theme, false),
-                          selectedColor:
-                              _symptomChipBackgroundColor(theme, true),
-                          checkmarkColor: theme.colorScheme.onPrimaryContainer,
-                          side: _symptomChipBorder(theme, isSelected),
-                          labelStyle: TextStyle(
-                            color: labelColor,
-                            fontWeight:
-                                isSelected ? FontWeight.w600 : FontWeight.w500,
-                          ),
-                          label: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (isSelected) ...[
-                                Icon(Icons.check,
-                                    size: 16,
-                                    color:
-                                        theme.colorScheme.onPrimaryContainer),
-                                const SizedBox(width: 4),
-                              ],
-                              Text(
-                                area,
-                                style: TextStyle(color: labelColor),
-                              ),
-                            ],
-                          ),
-                          selected: isSelected,
-                          onSelected: (_) =>
-                              setState(() => _selectedBodyArea = area),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-
-        // Mood Card
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Mood',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Mood can correlate with symptoms and pain patterns.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: _moods.map((mood) {
-                        final isSelected = _selectedMood == mood;
-                        final labelColor =
-                            _symptomChipForegroundColor(theme, isSelected);
-                        return ChoiceChip(
-                          backgroundColor:
-                              _symptomChipBackgroundColor(theme, false),
-                          selectedColor:
-                              _symptomChipBackgroundColor(theme, true),
-                          checkmarkColor: theme.colorScheme.onPrimaryContainer,
-                          side: _symptomChipBorder(theme, isSelected),
-                          labelStyle: TextStyle(
-                            color: labelColor,
-                            fontWeight:
-                                isSelected ? FontWeight.w600 : FontWeight.w500,
-                          ),
-                          avatar: Icon(
-                            _moodIcons[mood],
-                            size: 18,
-                            color: labelColor,
-                          ),
-                          label: Text(
-                            mood,
-                            style: TextStyle(color: labelColor),
-                          ),
-                          selected: isSelected,
-                          onSelected: (_) =>
-                              setState(() => _selectedMood = mood),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-
-        // Notes Card
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Notes',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    TextField(
-                      controller: _notesController,
-                      maxLines: 4,
-                      decoration: const InputDecoration(
-                        hintText:
-                            'Add any additional details about how you feel...',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-
-        // Photo Card (if attached)
-        if (_photoPath != null)
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Photo Attached',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () => setState(() {
-                              _photoPath = null;
-                              _photoBytesBase64 = null;
-                              _photoPreviewBytes = null;
-                            }),
-                            icon: const Icon(Icons.delete_outline,
-                                color: Colors.red),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: kIsWeb && _photoPreviewBytes != null
-                            ? Image.memory(
-                                _photoPreviewBytes!,
-                                height: 200,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.file(
-                                File(_photoPath!),
-                                height: 200,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-        // Add Photo Button
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: OutlinedButton.icon(
               onPressed: _pickImage,
               icon: const Icon(Icons.camera_alt, size: 18),
@@ -1667,11 +1408,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-
-        // Save Entry Button
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
             child: ElevatedButton.icon(
               onPressed: _saveEntry,
               icon: const Icon(Icons.save, size: 20),
@@ -1928,12 +1667,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('History'),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(60),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+      appBar: AppBar(title: const Text('History')),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
             child: TextField(
               controller: _searchController,
               onChanged: _filterEntries,
@@ -1952,139 +1690,116 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ),
             ),
           ),
-        ),
-      ),
-      body: _filteredEntries.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.search_off,
-                      size: 64,
-                      color: theme.colorScheme.onSurfaceVariant
-                          .withValues(alpha: 0.5)),
-                  const SizedBox(height: 16),
-                  Text(
-                    'No entries found',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+          Expanded(
+            child: _filteredEntries.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.search_off,
+                          size: 64,
+                          color: theme.colorScheme.onSurfaceVariant
+                              .withValues(alpha: 0.5),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'No entries found',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            )
-          : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: _filteredEntries.length,
-              itemBuilder: (context, index) {
-                final entry = _filteredEntries[index];
-                final painLevel = entry['pain_level'] as int;
-                final painColor = _getPainColor(painLevel);
-                final date = DateTime.parse(entry['timestamp']);
-                final symptoms = readEntrySymptoms(entry);
-                final temperature = readTemperatureCelsius(entry);
-                final temperatureUnit = _preferredTemperatureUnit(context);
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    itemCount: _filteredEntries.length,
+                    itemBuilder: (context, index) {
+                      final entry = _filteredEntries[index];
+                      final painLevel = entry['pain_level'] as int;
+                      final painColor = _getPainColor(painLevel);
+                      final date = DateTime.parse(entry['timestamp']);
+                      final note = entry['notes']?.toString() ?? '';
+                      final hasPhoto = entry['photo_path'] != null &&
+                          entry['photo_path'].toString().isNotEmpty;
 
-                return Dismissible(
-                  key: Key(entry['id'].toString()),
-                  direction: DismissDirection.endToStart,
-                  background: Container(
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(right: 20),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.error,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: const Icon(Icons.delete, color: Colors.white),
-                  ),
-                  onDismissed: (_) => _deleteEntry(entry['id']),
-                  child: Card(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(16),
-                      onTap: () => _showEntryDetails(entry),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(16),
+                          onTap: () => _showEntryDetails(entry),
+                          child: Padding(
+                            padding: const EdgeInsets.all(14),
+                            child: Row(
                               children: [
                                 Container(
-                                  width: 12,
-                                  height: 12,
+                                  width: 44,
+                                  height: 44,
                                   decoration: BoxDecoration(
                                     color: painColor,
                                     shape: BoxShape.circle,
                                   ),
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  '$painLevel/10',
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    '$painLevel',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                 ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  '${entry['body_area']} - ${entry['mood']}',
-                                  style: theme.textTheme.bodyMedium,
-                                ),
-                                const Spacer(),
-                                if (entry['photo_path'] != null &&
-                                    entry['photo_path'].toString().isNotEmpty)
-                                  Icon(Icons.photo,
-                                      size: 20,
-                                      color: theme.colorScheme.primary),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              DateFormat('yyyy-MM-dd HH:mm').format(date),
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            if (entry['notes'] != null &&
-                                entry['notes'].toString().isNotEmpty) ...[
-                              const SizedBox(height: 8),
-                              Text(
-                                entry['notes'],
-                                style: theme.textTheme.bodyMedium,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                            if (symptoms.isNotEmpty || temperature != null) ...[
-                              const SizedBox(height: 10),
-                              Wrap(
-                                spacing: 8,
-                                runSpacing: 8,
-                                children: [
-                                  if (temperature != null)
-                                    Chip(
-                                      avatar: const Icon(
-                                          Icons.thermostat_outlined,
-                                          size: 16),
-                                      label: Text(formatTemperature(
-                                        temperature,
-                                        unit: temperatureUnit,
-                                      )),
-                                    ),
-                                  ...symptoms.take(3).map(
-                                        (symptom) => Chip(
-                                          label: Text(symptom),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${entry['body_area']} - ${entry['mood']}',
+                                        style: theme.textTheme.bodyMedium
+                                            ?.copyWith(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        DateFormat('yyyy-MM-dd HH:mm')
+                                            .format(date),
+                                        style: theme.textTheme.bodySmall,
+                                      ),
+                                      if (note.isNotEmpty) ...[
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          note,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: theme.textTheme.bodySmall,
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                ),
+                                if (hasPhoto) ...[
+                                  const SizedBox(width: 8),
+                                  Icon(
+                                    Icons.photo_camera_outlined,
+                                    size: 20,
+                                    color: theme.colorScheme.onSurfaceVariant,
+                                  ),
                                 ],
-                              ),
-                            ],
-                          ],
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -2138,7 +1853,7 @@ class _StatsScreenState extends State<StatsScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     _loadEntries();
   }
 
@@ -2158,162 +1873,59 @@ class _StatsScreenState extends State<StatsScreen>
           e.key.toDouble(), (e.value['pain_level'] as int).toDouble());
     }).toList();
 
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Pain Trend Over Time',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge
-                    ?.copyWith(fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                height: 250,
-                child: LineChart(
-                  LineChartData(
-                    gridData: FlGridData(show: true, drawVerticalLine: false),
-                    titlesData: FlTitlesData(
-                      leftTitles: AxisTitles(
-                        sideTitles:
-                            SideTitles(showTitles: true, reservedSize: 30),
-                      ),
-                      bottomTitles:
-                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      rightTitles:
-                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      topTitles:
-                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    ),
-                    borderData: FlBorderData(show: false),
-                    minY: 0,
-                    maxY: 10,
-                    lineBarsData: [
-                      LineChartBarData(
-                        spots: spots,
-                        isCurved: true,
-                        color: Theme.of(context).colorScheme.primary,
-                        barWidth: 3,
-                        dotData: FlDotData(show: true),
-                        belowBarData: BarAreaData(
-                          show: true,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .primary
-                              .withValues(alpha: 0.1),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildWeeklyOverview() {
-    if (_entries.isEmpty) {
-      return _buildEmptyState(
-          Icons.bar_chart, 'No data yet', 'Add entries to see statistics');
-    }
-
-    final theme = Theme.of(context);
-    final stats = HealthAnalytics.weeklyStats(_entries);
-    final trendIcon = switch (stats.trend) {
-      'better' => Icons.trending_down,
-      'worse' => Icons.trending_up,
-      'same' => Icons.trending_flat,
-      _ => Icons.help_outline,
-    };
-    final trendLabel = switch (stats.trend) {
-      'better' => 'Better',
-      'worse' => 'Worse',
-      'same' => 'Same',
-      _ => 'Unknown',
-    };
-
-    final items = [
-      _StatItem(
-        Icons.monitor_heart_outlined,
-        'Avg pain this week',
-        stats.averagePainThisWeek == null
-            ? 'No logs'
-            : '${stats.averagePainThisWeek!.toStringAsFixed(1)}/10',
-      ),
-      _StatItem(
-        Icons.history_outlined,
-        'Avg pain last week',
-        stats.averagePainLastWeek == null
-            ? 'No logs'
-            : '${stats.averagePainLastWeek!.toStringAsFixed(1)}/10',
-      ),
-      _StatItem(
-        Icons.mood_outlined,
-        'Most common mood',
-        stats.mostCommonMoodThisWeek ?? 'No logs',
-      ),
-      _StatItem(
-        Icons.event_available_outlined,
-        'Days logged',
-        stats.daysLoggedThisWeek.toString(),
-      ),
-      _StatItem(trendIcon, 'Trend', trendLabel),
-    ];
-
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
         Card(
+          margin: EdgeInsets.zero,
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Weekly Overview',
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(fontWeight: FontWeight.w700),
+                  'Pain Trend Over Time',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(fontWeight: FontWeight.w600),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  'A simple comparison of this week and last week.',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                const SizedBox(height: 12),
+                Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? const Color(0xFF1E1E1E)
+                        : const Color(0xFFF5F5F5),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: LineChart(
+                    LineChartData(
+                      gridData: FlGridData(show: false),
+                      titlesData: FlTitlesData(show: false),
+                      borderData: FlBorderData(show: false),
+                      minY: 0,
+                      maxY: 10,
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: spots,
+                          isCurved: false,
+                          color: Theme.of(context).colorScheme.primary,
+                          barWidth: 3,
+                          dotData: FlDotData(show: true),
+                          belowBarData: BarAreaData(show: false),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 18),
-                ...items.map((item) => Padding(
-                      padding: const EdgeInsets.only(bottom: 14),
-                      child: Row(
-                        children: [
-                          Icon(item.icon,
-                              color: theme.colorScheme.primary, size: 22),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(item.label,
-                                style: theme.textTheme.bodyMedium),
-                          ),
-                          Text(
-                            item.value,
-                            style: theme.textTheme.titleMedium
-                                ?.copyWith(fontWeight: FontWeight.w700),
-                          ),
-                        ],
-                      ),
-                    )),
               ],
             ),
           ),
         ),
+        const SizedBox(height: 16),
+        _buildQuickSummaryCard(),
       ],
     );
   }
@@ -2378,12 +1990,14 @@ class _StatsScreenState extends State<StatsScreen>
                           getTitlesWidget: (value, meta) {
                             final index = value.toInt();
                             if (index >= 0 && index < areaData.length) {
+                              final area = areaData.keys.elementAt(index);
+                              final label = area.length <= 4
+                                  ? area
+                                  : area.substring(0, 4);
                               return Padding(
                                 padding: const EdgeInsets.only(top: 8),
                                 child: Text(
-                                  areaData.keys
-                                      .elementAt(index)
-                                      .substring(0, 4),
+                                  label,
                                   style: const TextStyle(fontSize: 10),
                                 ),
                               );
@@ -2410,80 +2024,44 @@ class _StatsScreenState extends State<StatsScreen>
     );
   }
 
-  Widget _buildSymptomFrequency() {
-    if (_entries.isEmpty) {
-      return _buildEmptyState(
-          Icons.checklist, 'No data yet', 'Add entries to see symptoms');
-    }
-
+  Widget _buildQuickSummaryCard() {
     final theme = Theme.of(context);
-    final counts = <String, int>{};
-    for (final entry in _entries) {
-      for (final symptom in readEntrySymptoms(entry)) {
-        counts[symptom] = (counts[symptom] ?? 0) + 1;
-      }
-      final custom = readCustomSymptoms(entry);
-      if (custom.isNotEmpty) {
-        counts[custom] = (counts[custom] ?? 0) + 1;
-      }
-    }
+    final painLevels = _entries.map((e) => e['pain_level'] as int).toList();
+    final avgPain = painLevels.reduce((a, b) => a + b) / painLevels.length;
+    final maxPain = painLevels.reduce((a, b) => a > b ? a : b);
+    final stats = [
+      _StatItem(
+          Icons.format_list_numbered, 'Total Entries', '${_entries.length}'),
+      _StatItem(Icons.trending_up, 'Average Pain',
+          '${avgPain.toStringAsFixed(1)}/10'),
+      _StatItem(Icons.warning_amber_outlined, 'Highest Pain', '$maxPain/10'),
+    ];
 
-    if (counts.isEmpty) {
-      return _buildEmptyState(Icons.checklist, 'No symptoms logged',
-          'Select symptoms in new entries to see frequency');
-    }
-
-    final rows = counts.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Symptom Frequency',
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Most frequently selected symptoms across your entries.',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ...rows.map((row) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 14),
-                    child: Row(
-                      children: [
-                        Icon(Icons.check_circle_outline,
-                            color: theme.colorScheme.primary, size: 22),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child:
-                              Text(row.key, style: theme.textTheme.bodyMedium),
-                        ),
-                        Text(
-                          row.value.toString(),
-                          style: theme.textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-              ],
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Quick Summary',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
+            const SizedBox(height: 12),
+            ...stats.map(
+              (stat) => _PreviewStatRow(
+                icon: stat.icon,
+                label: stat.label,
+                value: stat.value,
+                valueColor: theme.colorScheme.onSurface,
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -2517,20 +2095,16 @@ class _StatsScreenState extends State<StatsScreen>
         bottom: TabBar(
           controller: _tabController,
           tabs: const [
-            Tab(icon: Icon(Icons.view_week), text: 'Week'),
             Tab(icon: Icon(Icons.show_chart), text: 'Trend'),
             Tab(icon: Icon(Icons.bar_chart), text: 'By Area'),
-            Tab(icon: Icon(Icons.checklist), text: 'Symptoms'),
           ],
         ),
       ),
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildWeeklyOverview(),
           _buildTrendChart(),
           _buildAreaChart(),
-          _buildSymptomFrequency(),
         ],
       ),
     );
@@ -2551,6 +2125,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
   InsightPayload? _insight;
   String _insightSource = 'Local fallback';
   bool _isGenerating = false;
+  String? _lastGeneratedSignature;
 
   @override
   void initState() {
@@ -2558,10 +2133,11 @@ class _InsightsScreenState extends State<InsightsScreen> {
     _loadEntries();
   }
 
-  Future<void> _loadEntries() async {
+  Future<void> _loadEntries({bool forceGenerate = false}) async {
     final entries = await DatabaseHelper.getEntries();
     InsightPayload? payload;
     String source = 'Local fallback';
+    final signature = _entrySignature(entries);
 
     final cached = await AppBackend.latestAiInsight();
     if (cached != null) {
@@ -2577,6 +2153,10 @@ class _InsightsScreenState extends State<InsightsScreen> {
       _insight = payload;
       _insightSource = source;
     });
+    if (entries.isNotEmpty &&
+        (forceGenerate || signature != _lastGeneratedSignature)) {
+      unawaited(_generateAiInsight(signature: signature));
+    }
   }
 
   InsightPayload _payloadFromCached(Map<String, dynamic> row) {
@@ -2592,7 +2172,16 @@ class _InsightsScreenState extends State<InsightsScreen> {
     });
   }
 
-  Future<void> _generateAiInsight() async {
+  String _entrySignature(List<Map<String, dynamic>> entries) {
+    if (entries.isEmpty) return '0';
+    final newest = entries
+        .map((entry) => entry['timestamp']?.toString() ?? '')
+        .fold<String>('',
+            (current, next) => next.compareTo(current) > 0 ? next : current);
+    return '${entries.length}:$newest';
+  }
+
+  Future<void> _generateAiInsight({required String signature}) async {
     if (_entries.isEmpty || _isGenerating) return;
     setState(() => _isGenerating = true);
     final payload = await AiInsightService.generate(entries: _entries);
@@ -2603,6 +2192,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
           ? 'Local fallback'
           : 'Cloudflare AI';
       _isGenerating = false;
+      _lastGeneratedSignature = signature;
     });
   }
 
@@ -2616,7 +2206,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
         title: const Text('AI Insights'),
         actions: [
           IconButton(
-            onPressed: _loadEntries,
+            onPressed: () => _loadEntries(forceGenerate: true),
             icon: const Icon(Icons.refresh),
           ),
         ],
@@ -2648,8 +2238,19 @@ class _InsightsScreenState extends State<InsightsScreen> {
                       padding: const EdgeInsets.all(20),
                       child: Row(
                         children: [
-                          Icon(Icons.psychology,
-                              color: theme.colorScheme.primary, size: 32),
+                          Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.primary,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              Icons.psychology,
+                              color: theme.colorScheme.onPrimary,
+                              size: 28,
+                            ),
+                          ),
                           const SizedBox(width: 16),
                           Expanded(
                             child: Column(
@@ -2661,7 +2262,9 @@ class _InsightsScreenState extends State<InsightsScreen> {
                                       ?.copyWith(fontWeight: FontWeight.w600),
                                 ),
                                 Text(
-                                  '$_insightSource - based on ${_entries.length} entries',
+                                  _isGenerating
+                                      ? 'Analyzing automatically - based on ${_entries.length} entries'
+                                      : '$_insightSource - based on ${_entries.length} entries',
                                   style: theme.textTheme.bodyMedium?.copyWith(
                                       color:
                                           theme.colorScheme.onSurfaceVariant),
@@ -2669,81 +2272,18 @@ class _InsightsScreenState extends State<InsightsScreen> {
                               ],
                             ),
                           ),
-                          IconButton(
-                            onPressed:
-                                _isGenerating ? null : _generateAiInsight,
-                            icon: _isGenerating
-                                ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                        strokeWidth: 2),
-                                  )
-                                : const Icon(Icons.auto_awesome),
-                            tooltip: 'Generate AI insight',
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildInsightCard(
-                    title: 'Weekly Summary',
-                    icon: Icons.summarize_outlined,
-                    children: [insight.summary],
-                  ),
-                  const SizedBox(height: 16),
-                  _buildInsightCard(
-                    title: 'Pattern Insights',
-                    icon: Icons.timeline_outlined,
-                    children: insight.patterns,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildInsightCard(
-                    title: 'Educational Notes',
-                    icon: Icons.school_outlined,
-                    children: insight.education,
-                  ),
-                  const SizedBox(height: 16),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                insight.safetyStatus == 'urgent'
-                                    ? Icons.warning_amber_outlined
-                                    : Icons.health_and_safety_outlined,
-                                color: insight.safetyStatus == 'urgent'
-                                    ? theme.colorScheme.error
-                                    : theme.colorScheme.primary,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                'When to Seek Care',
-                                style: theme.textTheme.titleLarge
-                                    ?.copyWith(fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          ...[
-                            ...insight.redFlags,
-                            ...insight.careGuidance,
-                          ].map(
-                            (item) => Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: Text('- $item',
-                                  style: theme.textTheme.bodyMedium),
+                          if (_isGenerating)
+                            const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
                             ),
-                          ),
                         ],
                       ),
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  _buildAnalysisCard(insight),
                   const SizedBox(height: 16),
                   _buildQuickStats(),
                 ],
@@ -2752,38 +2292,77 @@ class _InsightsScreenState extends State<InsightsScreen> {
     );
   }
 
-  Widget _buildInsightCard({
-    required String title,
-    required IconData icon,
-    required List<String> children,
-  }) {
+  Widget _buildAnalysisCard(InsightPayload insight) {
     final theme = Theme.of(context);
-    final items = children.isEmpty ? ['No insight available yet.'] : children;
+    final stats = HealthAnalytics.weeklyStats(_entries);
+    final painLevels = _entries.map((e) => e['pain_level'] as int).toList();
+    final avgPain = painLevels.reduce((a, b) => a + b) / painLevels.length;
+    final affectedAreas = <String, List<int>>{};
+    final moodPain = <String, List<int>>{};
+    for (final entry in _entries) {
+      final area = entry['body_area']?.toString() ?? 'Unknown';
+      final mood = entry['mood']?.toString() ?? 'Unknown';
+      final pain = entry['pain_level'] as int;
+      affectedAreas.putIfAbsent(area, () => []).add(pain);
+      moodPain.putIfAbsent(mood, () => []).add(pain);
+    }
+    String avgLabel(MapEntry<String, List<int>> row) {
+      final avg = row.value.reduce((a, b) => a + b) / row.value.length;
+      return '${row.key} (avg ${avg.toStringAsFixed(1)}/10)';
+    }
+
+    final mostAffected = affectedAreas.entries
+        .reduce((a, b) => a.value.length >= b.value.length ? a : b);
+    final mostCommonMood = moodPain.entries
+        .reduce((a, b) => a.value.length >= b.value.length ? a : b);
+    final recommendations = [
+      ...insight.patterns,
+      ...insight.education,
+      ...insight.redFlags,
+      ...insight.careGuidance,
+    ];
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(icon, color: theme.colorScheme.primary),
-                const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(fontWeight: FontWeight.w600),
+        child: DefaultTextStyle(
+          style: theme.textTheme.bodyMedium!.copyWith(height: 1.55),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Health Pattern Analysis',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
                 ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            ...items.map(
-              (item) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Text('- $item', style: theme.textTheme.bodyMedium),
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              Text(
+                'Overall Statistics:',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text('- Total entries: ${_entries.length}'),
+              Text('- Average pain level: ${avgPain.toStringAsFixed(1)}/10'),
+              Text(
+                '- Recent 7-day average: ${stats.averagePainThisWeek == null ? 'No logs' : '${stats.averagePainThisWeek!.toStringAsFixed(1)}/10'}',
+              ),
+              const SizedBox(height: 16),
+              Text('Most affected area: ${avgLabel(mostAffected)}'),
+              Text('Most common during: ${avgLabel(mostCommonMood)}'),
+              const SizedBox(height: 16),
+              Text('Trend: ${insight.summary}'),
+              const SizedBox(height: 16),
+              Text(
+                'Recommendations:',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              ...recommendations.take(5).map((item) => Text('- $item')),
+            ],
+          ),
         ),
       ),
     );
@@ -2796,26 +2375,15 @@ class _InsightsScreenState extends State<InsightsScreen> {
 
     final bodyAreas = <String, int>{};
     final moods = <String, int>{};
-    final symptoms = <String, int>{};
     for (final entry in _entries) {
       bodyAreas[entry['body_area']] = (bodyAreas[entry['body_area']] ?? 0) + 1;
       moods[entry['mood']] = (moods[entry['mood']] ?? 0) + 1;
-      for (final symptom in readEntrySymptoms(entry)) {
-        symptoms[symptom] = (symptoms[symptom] ?? 0) + 1;
-      }
-      final custom = readCustomSymptoms(entry);
-      if (custom.isNotEmpty) {
-        symptoms[custom] = (symptoms[custom] ?? 0) + 1;
-      }
     }
 
     final mostCommonArea =
         bodyAreas.entries.reduce((a, b) => a.value > b.value ? a : b).key;
     final mostCommonMood =
         moods.entries.reduce((a, b) => a.value > b.value ? a : b).key;
-    final mostCommonSymptom = symptoms.isEmpty
-        ? null
-        : symptoms.entries.reduce((a, b) => a.value > b.value ? a : b).key;
 
     final stats = [
       _StatItem(Icons.format_list_numbered, 'Total Entries',
@@ -2823,10 +2391,8 @@ class _InsightsScreenState extends State<InsightsScreen> {
       _StatItem(Icons.trending_up, 'Average Pain',
           '${avgPain.toStringAsFixed(1)}/10'),
       _StatItem(Icons.warning, 'Highest Pain', '$maxPain/10'),
-      _StatItem(Icons.place, 'Most Common', mostCommonArea),
-      _StatItem(Icons.mood, 'Most Common', mostCommonMood),
-      _StatItem(
-          Icons.checklist, 'Most Common', mostCommonSymptom ?? 'No symptoms'),
+      _StatItem(Icons.place_outlined, 'Most Common Area', mostCommonArea),
+      _StatItem(Icons.mood_outlined, 'Most Common Mood', mostCommonMood),
     ];
 
     return Card(
@@ -2843,25 +2409,14 @@ class _InsightsScreenState extends State<InsightsScreen> {
                   ?.copyWith(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 16),
-            ...stats.map((stat) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: Row(
-                    children: [
-                      Icon(stat.icon,
-                          size: 20,
-                          color: Theme.of(context).colorScheme.primary),
-                      const SizedBox(width: 12),
-                      Expanded(
-                          child: Text(stat.label,
-                              style: Theme.of(context).textTheme.bodyMedium)),
-                      Text(stat.value,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w600)),
-                    ],
-                  ),
-                )),
+            ...stats.map(
+              (stat) => _PreviewStatRow(
+                icon: stat.icon,
+                label: stat.label,
+                value: stat.value,
+                valueColor: Theme.of(context).colorScheme.primary,
+              ),
+            ),
           ],
         ),
       ),
@@ -2874,6 +2429,54 @@ class _StatItem {
   final String label;
   final String value;
   _StatItem(this.icon, this.label, this.value);
+}
+
+class _PreviewStatRow extends StatelessWidget {
+  const _PreviewStatRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+    this.valueColor,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+  final Color? valueColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: theme.colorScheme.outline),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: theme.colorScheme.primary),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              label,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Text(
+            value,
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: valueColor ?? theme.colorScheme.onSurface,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 // ==================== SETTINGS SCREEN ====================
@@ -3030,20 +2633,6 @@ class _SettingsScreenState extends State<SettingsScreen>
     }
   }
 
-  Future<void> _replayOnboarding() async {
-    await Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => OnboardingScreen(
-          onComplete: () async {
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setBool('onboardingComplete', true);
-            if (context.mounted) Navigator.of(context).pop();
-          },
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -3076,28 +2665,25 @@ class _SettingsScreenState extends State<SettingsScreen>
       padding: const EdgeInsets.all(16),
       children: [
         Card(
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: theme.colorScheme.primaryContainer,
-              child: Icon(Icons.person,
-                  color: theme.colorScheme.onPrimaryContainer),
-            ),
-            title: const Text('Profile'),
-            subtitle: Text(_userName ?? 'Tap to set your name'),
+          margin: EdgeInsets.zero,
+          child: _settingsItem(
+            theme: theme,
+            icon: Icons.person_outline,
+            title: 'Profile',
+            subtitle: _userName ?? 'Tap to set your name',
             trailing: const Icon(Icons.chevron_right),
             onTap: _showNameDialog,
           ),
         ),
         const SizedBox(height: 12),
         Card(
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: theme.colorScheme.primaryContainer,
-              child: Icon(Icons.dark_mode,
-                  color: theme.colorScheme.onPrimaryContainer),
-            ),
-            title: const Text('Dark Mode'),
-            subtitle: const Text('Toggle between light and dark theme'),
+          margin: EdgeInsets.zero,
+          child: _settingsItem(
+            theme: theme,
+            icon: Icons.dark_mode_outlined,
+            iconBackground: theme.colorScheme.primary.withValues(alpha: 0.10),
+            title: 'Dark Mode',
+            subtitle: 'Toggle between light and dark theme',
             trailing: Switch(
               value: themeNotifier.isDark,
               onChanged: (_) => themeNotifier.toggle(),
@@ -3106,28 +2692,30 @@ class _SettingsScreenState extends State<SettingsScreen>
         ),
         const SizedBox(height: 12),
         Card(
+          margin: EdgeInsets.zero,
           child: Column(
             children: [
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: theme.colorScheme.primaryContainer,
-                  child: Icon(Icons.file_download,
-                      color: theme.colorScheme.onPrimaryContainer),
-                ),
-                title: const Text('Export to CSV'),
-                subtitle: const Text('Share your data as spreadsheet'),
+              _settingsItem(
+                theme: theme,
+                icon: Icons.file_download_outlined,
+                iconBackground: const Color(0xFF4CAF50).withValues(alpha: 0.10),
+                title: 'Export to CSV',
+                subtitle: 'Share your data as spreadsheet',
                 trailing: const Icon(Icons.chevron_right),
                 onTap: _exportCSV,
               ),
-              const Divider(height: 1),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: theme.colorScheme.primaryContainer,
-                  child: Icon(Icons.picture_as_pdf,
-                      color: theme.colorScheme.onPrimaryContainer),
-                ),
-                title: const Text('Export to PDF'),
-                subtitle: const Text('Generate printable report'),
+              Divider(
+                height: 1,
+                indent: 20,
+                endIndent: 20,
+                color: theme.colorScheme.outline,
+              ),
+              _settingsItem(
+                theme: theme,
+                icon: Icons.picture_as_pdf_outlined,
+                iconBackground: const Color(0xFFF44336).withValues(alpha: 0.10),
+                title: 'Export to PDF',
+                subtitle: 'Generate printable report',
                 trailing: const Icon(Icons.chevron_right),
                 onTap: _exportPDF,
               ),
@@ -3136,31 +2724,68 @@ class _SettingsScreenState extends State<SettingsScreen>
         ),
         const SizedBox(height: 12),
         Card(
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: theme.colorScheme.secondaryContainer,
-              child: Icon(Icons.play_circle_outline,
-                  color: theme.colorScheme.onSecondaryContainer),
-            ),
-            title: const Text('Replay onboarding'),
-            subtitle: const Text('Review app purpose, tracking, and privacy'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: _replayOnboarding,
-          ),
-        ),
-        const SizedBox(height: 12),
-        Card(
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: theme.colorScheme.primaryContainer,
-              child: Icon(Icons.info_outline,
-                  color: theme.colorScheme.onPrimaryContainer),
-            ),
-            title: const Text('About'),
-            subtitle: const Text('Symptom Tracker v1.0'),
+          margin: EdgeInsets.zero,
+          child: _settingsItem(
+            theme: theme,
+            icon: Icons.info_outline,
+            title: 'About',
+            subtitle: 'Symptom Tracker v1.0',
           ),
         ),
       ],
+    );
+  }
+
+  Widget _settingsItem({
+    required ThemeData theme,
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    Widget? trailing,
+    VoidCallback? onTap,
+    Color? iconBackground,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 20,
+              backgroundColor: iconBackground ??
+                  (theme.brightness == Brightness.dark
+                      ? const Color(0xFF1E1E1E)
+                      : const Color(0xFFF5F5F5)),
+              child: Icon(icon, color: theme.colorScheme.primary, size: 20),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (trailing != null) trailing,
+          ],
+        ),
+      ),
     );
   }
 }
