@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,6 +8,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:symptom_tracker/main.dart';
 import 'package:symptom_tracker/services/app_backend.dart';
+import 'package:symptom_tracker/services/health_analytics.dart';
 import 'package:symptom_tracker/services/local_symptom_repository.dart';
 
 void main() {
@@ -14,6 +17,10 @@ void main() {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfiNoIsolate;
     LocalSymptomRepository.useWebStorageForTesting = true;
+  });
+
+  setUp(() {
+    AppBackend.resetPreloadForTesting();
   });
 
   testWidgets('first launch shows onboarding after splash',
@@ -40,6 +47,7 @@ void main() {
   testWidgets('returning user sees redesigned log screen',
       (WidgetTester tester) async {
     SharedPreferences.setMockInitialValues({'onboardingComplete': true});
+    AppBackend.setPreloadOverrideForTesting(() async => null);
 
     await tester.pumpWidget(const MyApp());
     await tester.pump(const Duration(milliseconds: 800));
@@ -66,6 +74,7 @@ void main() {
       tester.view.resetDevicePixelRatio();
     });
     SharedPreferences.setMockInitialValues({'onboardingComplete': true});
+    AppBackend.setPreloadOverrideForTesting(() async => null);
     await AppBackend.repository.init();
 
     await tester.pumpWidget(const MyApp());
@@ -174,7 +183,59 @@ void main() {
 
     expect(find.text('AI Analysis'), findsOneWidget);
     expect(find.text('Health Pattern Analysis'), findsOneWidget);
+    expect(find.textContaining('Local fallback'), findsOneWidget);
     expect(find.text('Quick Stats'), findsOneWidget);
     expect(find.byTooltip('Generate AI insight'), findsNothing);
+  });
+
+  testWidgets('returning user splash progresses after bounded preload',
+      (tester) async {
+    SharedPreferences.setMockInitialValues({'onboardingComplete': true});
+    final neverCompletes = Completer<InsightPayload?>();
+    AppBackend.setPreloadOverrideForTesting(
+      () => neverCompletes.future,
+    );
+
+    await tester.pumpWidget(const MyApp());
+    expect(find.text('Symptom Tracker'), findsOneWidget);
+
+    await tester.pump(const Duration(milliseconds: 4200));
+    await tester.pumpAndSettle();
+
+    expect(find.text('How are you feeling today?'), findsOneWidget);
+  });
+
+  testWidgets('insights prefers preloaded Cloudflare AI payload',
+      (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    await AppBackend.repository.init();
+    await DatabaseHelper.insertEntry({
+      'pain_level': 4,
+      'body_area': 'Neck',
+      'mood': 'Calm',
+      'notes': 'preload insight test',
+      'timestamp': DateTime.now().toIso8601String(),
+    });
+    AppBackend.setPreloadedAiInsightForTesting(
+      const InsightPayload(
+        summary: 'Cloudflare preload summary',
+        patterns: ['Pattern from preloaded AI'],
+        education: [],
+        careGuidance: [
+          'This is not a diagnosis. Consult a healthcare professional for medical advice.'
+        ],
+        redFlags: [],
+        trend: 'same',
+        safetyStatus: 'safe',
+        model: '@cf/test-model',
+      ),
+    );
+
+    await tester.pumpWidget(const MaterialApp(home: InsightsScreen()));
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('Cloudflare AI'), findsOneWidget);
+    expect(find.textContaining('Cloudflare preload summary'), findsOneWidget);
+    expect(find.textContaining('Pattern from preloaded AI'), findsOneWidget);
   });
 }

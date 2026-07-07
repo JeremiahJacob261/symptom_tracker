@@ -64,6 +64,102 @@ String _preferredTemperatureUnit(BuildContext context) {
   return Localizations.localeOf(context).countryCode == 'US' ? 'F' : 'C';
 }
 
+class _AppPalette {
+  static const teal = Color(0xFF009688);
+  static const aqua = Color(0xFFC7F0EA);
+  static const aquaSoft = Color(0xFFE6F8F6);
+  static const orange = Color(0xFFFF9800);
+  static const page = Color(0xFFFAFAFA);
+  static const card = Color(0xFFFFFFFF);
+  static const text = Color(0xFF202124);
+  static const muted = Color(0xFF757575);
+  static const divider = Color(0xFFE0E0E0);
+  static const darkPage = Color(0xFF0B0F12);
+  static const darkCard = Color(0xFF151A1E);
+}
+
+const double _screenHPadding = 20;
+const double _cardRadius = 22;
+
+List<BoxShadow> _softShadow(BuildContext context, {double opacity = 0.10}) {
+  return [
+    BoxShadow(
+      color: Colors.black.withValues(
+        alpha: Theme.of(context).brightness == Brightness.dark
+            ? opacity * 1.6
+            : opacity,
+      ),
+      blurRadius: 18,
+      offset: const Offset(0, 8),
+    ),
+  ];
+}
+
+Color _softSurface(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.dark
+      ? _AppPalette.darkCard
+      : _AppPalette.card;
+}
+
+class SoftCard extends StatelessWidget {
+  const SoftCard({
+    super.key,
+    required this.child,
+    this.margin,
+    this.padding = const EdgeInsets.all(18),
+  });
+
+  final Widget child;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry padding;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: margin,
+      padding: padding,
+      decoration: BoxDecoration(
+        color: _softSurface(context),
+        borderRadius: BorderRadius.circular(_cardRadius),
+        boxShadow: _softShadow(context),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.22),
+        ),
+      ),
+      child: child,
+    );
+  }
+}
+
+class SectionTitle extends StatelessWidget {
+  const SectionTitle(this.text, {super.key});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            fontSize: 21,
+            fontWeight: FontWeight.w800,
+          ),
+    );
+  }
+}
+
+class EmojiIcon extends StatelessWidget {
+  const EmojiIcon(this.emoji, {super.key, this.size = 30});
+
+  final String emoji;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(emoji, style: TextStyle(fontSize: size, height: 1));
+  }
+}
+
 class UserService {
   static Future<String?> getUserName() async {
     final prefs = await SharedPreferences.getInstance();
@@ -102,62 +198,62 @@ class MyApp extends StatelessWidget {
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: const ColorScheme.light(
-        primary: Color(0xFF009688),
+        primary: _AppPalette.teal,
         onPrimary: Colors.white,
-        primaryContainer: Color(0xFFB2DFDB),
-        onPrimaryContainer: Color(0xFF212121),
+        primaryContainer: _AppPalette.aqua,
+        onPrimaryContainer: _AppPalette.text,
         secondary: Color(0xFF00897B),
         onSecondary: Colors.white,
         secondaryContainer: Color(0xFF80CBC4),
-        onSecondaryContainer: Color(0xFF212121),
-        tertiary: Color(0xFFFF9800),
+        onSecondaryContainer: _AppPalette.text,
+        tertiary: _AppPalette.orange,
         onTertiary: Colors.white,
-        surface: Color(0xFFFFFFFF),
-        onSurface: Color(0xFF212121),
-        onSurfaceVariant: Color(0xFF757575),
+        surface: _AppPalette.card,
+        onSurface: _AppPalette.text,
+        onSurfaceVariant: _AppPalette.muted,
         error: Color(0xFFD32F2F),
         onError: Colors.white,
-        outline: Color(0xFFE0E0E0),
+        outline: _AppPalette.divider,
       ),
-      scaffoldBackgroundColor: const Color(0xFFFAFAFA),
+      scaffoldBackgroundColor: _AppPalette.page,
       cardTheme: CardThemeData(
-        color: const Color(0xFFFFFFFF),
-        elevation: 2,
+        color: _AppPalette.card,
+        elevation: 0,
         shadowColor: Colors.black.withValues(alpha: 0.10),
         margin: const EdgeInsets.all(16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFFFFFFFF),
-        foregroundColor: Color(0xFF212121),
+        backgroundColor: _AppPalette.card,
+        foregroundColor: _AppPalette.text,
         elevation: 1,
         shadowColor: Color(0x1A000000),
         centerTitle: true,
         titleTextStyle: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: Color(0xFF212121),
+          fontSize: 22,
+          fontWeight: FontWeight.w800,
+          color: _AppPalette.text,
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Color(0xFFFFFFFF),
-        selectedItemColor: Color(0xFF009688),
-        unselectedItemColor: Color(0xFF757575),
+        backgroundColor: _AppPalette.card,
+        selectedItemColor: _AppPalette.teal,
+        unselectedItemColor: _AppPalette.muted,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),
       sliderTheme: SliderThemeData(
-        activeTrackColor: const Color(0xFF009688),
-        inactiveTrackColor: const Color(0xFFF5F5F5),
-        thumbColor: const Color(0xFF009688),
-        overlayColor: const Color(0xFF009688).withValues(alpha: 0.12),
-        trackHeight: 8,
-        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12),
+        activeTrackColor: _AppPalette.orange,
+        inactiveTrackColor: const Color(0xFFF0F0F0),
+        thumbColor: _AppPalette.orange,
+        overlayColor: _AppPalette.orange.withValues(alpha: 0.12),
+        trackHeight: 10,
+        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 16),
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 24),
       ),
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFFF5F5F5),
-        selectedColor: const Color(0xFFC7F0EA),
+        selectedColor: _AppPalette.aqua,
         labelStyle: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w500,
@@ -168,43 +264,43 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: Color(0xFF212121)),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: const Color(0xFFF5F5F5),
+        fillColor: const Color(0xFFFFFFFF),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(22),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(22),
+          borderSide: const BorderSide(color: Color(0xFFECECEC)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF009688), width: 2),
+          borderRadius: BorderRadius.circular(22),
+          borderSide: const BorderSide(color: _AppPalette.teal, width: 2),
         ),
         contentPadding: const EdgeInsets.all(16),
-        hintStyle: const TextStyle(color: Color(0xFF9E9E9E), fontSize: 14),
+        hintStyle: const TextStyle(color: _AppPalette.muted, fontSize: 18),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF009688),
+          backgroundColor: _AppPalette.teal,
           foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 56),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           elevation: 0,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: const Color(0xFF009688),
+          foregroundColor: _AppPalette.teal,
           minimumSize: const Size(double.infinity, 48),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
           side: const BorderSide(color: Color(0xFFE0E0E0)),
           textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
@@ -279,23 +375,23 @@ class MyApp extends StatelessWidget {
         onError: Colors.black,
         outline: Color(0xFF333333),
       ),
-      scaffoldBackgroundColor: const Color(0xFF000000),
+      scaffoldBackgroundColor: _AppPalette.darkPage,
       cardTheme: CardThemeData(
-        color: const Color(0xFF121212),
-        elevation: 2,
+        color: _AppPalette.darkCard,
+        elevation: 0,
         shadowColor: Colors.black.withValues(alpha: 0.3),
         margin: const EdgeInsets.all(16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFF121212),
+        backgroundColor: _AppPalette.darkCard,
         foregroundColor: Color(0xFFFFFFFF),
         elevation: 1,
         shadowColor: Color(0x33000000),
         centerTitle: true,
         titleTextStyle: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
+          fontSize: 22,
+          fontWeight: FontWeight.w800,
           color: Color(0xFFFFFFFF),
         ),
       ),
@@ -311,8 +407,8 @@ class MyApp extends StatelessWidget {
         inactiveTrackColor: const Color(0xFF1E1E1E),
         thumbColor: const Color(0xFF4DB6AC),
         overlayColor: const Color(0xFF4DB6AC).withValues(alpha: 0.12),
-        trackHeight: 8,
-        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12),
+        trackHeight: 10,
+        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 16),
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 24),
       ),
       chipTheme: ChipThemeData(
@@ -327,21 +423,21 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: Color(0xFFB2DFDB)),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: const Color(0xFF1E1E1E),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(22),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(22),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(22),
           borderSide: const BorderSide(color: Color(0xFF4DB6AC), width: 2),
         ),
         contentPadding: const EdgeInsets.all(16),
@@ -353,7 +449,7 @@ class MyApp extends StatelessWidget {
           foregroundColor: const Color(0xFF00332C),
           minimumSize: const Size(double.infinity, 56),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           elevation: 0,
         ),
@@ -363,7 +459,7 @@ class MyApp extends StatelessWidget {
           foregroundColor: const Color(0xFF4DB6AC),
           minimumSize: const Size(double.infinity, 48),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
           side: const BorderSide(color: Color(0xFF4DB6AC)),
           textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
@@ -438,7 +534,27 @@ class _AppLaunchGateState extends State<AppLaunchGate> {
   Future<void> _loadLaunchState() async {
     final prefs = await SharedPreferences.getInstance();
     final complete = prefs.getBool(_onboardingCompleteKey) ?? false;
-    await Future<void>.delayed(const Duration(milliseconds: 700));
+    final minimumSplash =
+        Future<void>.delayed(const Duration(milliseconds: 700));
+
+    if (complete) {
+      final preload = AppBackend.preloadAiInsight();
+      final timeout = Completer<void>();
+      final timer = Timer(const Duration(seconds: 4), () {
+        if (!timeout.isCompleted) timeout.complete();
+      });
+      try {
+        await Future.any<void>([
+          preload.then((_) {}),
+          timeout.future,
+        ]);
+      } finally {
+        timer.cancel();
+      }
+      unawaited(preload);
+    }
+
+    await minimumSplash;
     if (!mounted) return;
     setState(() {
       _onboardingComplete = complete;
@@ -489,11 +605,11 @@ class SplashScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 92,
-                height: 92,
+                width: 76,
+                height: 76,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary,
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(28),
                   boxShadow: [
                     BoxShadow(
                       color: theme.colorScheme.primary.withValues(alpha: 0.24),
@@ -505,13 +621,14 @@ class SplashScreen extends StatelessWidget {
                 child: Icon(
                   Icons.health_and_safety_outlined,
                   color: theme.colorScheme.onPrimary,
-                  size: 46,
+                  size: 38,
                 ),
               ),
               const SizedBox(height: 24),
               Text(
                 'Symptom Tracker',
                 style: theme.textTheme.headlineLarge?.copyWith(
+                  fontSize: 26,
                   fontWeight: FontWeight.w800,
                   color: theme.colorScheme.onSurface,
                 ),
@@ -522,6 +639,20 @@ class SplashScreen extends StatelessWidget {
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
+              ),
+              const SizedBox(height: 22),
+              ValueListenableBuilder<String>(
+                valueListenable: AppBackend.preloadStatus,
+                builder: (context, status, _) {
+                  return Text(
+                    status,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -617,15 +748,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          width: 112,
-                          height: 112,
+                          width: 104,
+                          height: 104,
                           decoration: BoxDecoration(
                             color: theme.colorScheme.primaryContainer,
-                            borderRadius: BorderRadius.circular(28),
+                            borderRadius: BorderRadius.circular(32),
+                            boxShadow: _softShadow(context, opacity: 0.08),
                           ),
                           child: Icon(
                             page.icon,
-                            size: 54,
+                            size: 46,
                             color: theme.colorScheme.onPrimaryContainer,
                           ),
                         ),
@@ -730,19 +862,15 @@ class _MainScreenState extends State<MainScreen> {
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.fromLTRB(18, 10, 18, 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildNavItem(Icons.home_outlined, Icons.home, 'Home', 0),
-                _buildNavItem(
-                    Icons.history_outlined, Icons.history, 'History', 1),
-                _buildNavItem(
-                    Icons.bar_chart_outlined, Icons.bar_chart, 'Stats', 2),
-                _buildNavItem(
-                    Icons.lightbulb_outline, Icons.lightbulb, 'Insights', 3),
-                _buildNavItem(
-                    Icons.settings_outlined, Icons.settings, 'Settings', 4),
+                _buildNavItem('🏠', 'Home', 0),
+                _buildNavItem('📜', 'History', 1),
+                _buildNavItem('📊', 'Stats', 2),
+                _buildNavItem('💡', 'Insights', 3),
+                _buildNavItem('⚙️', 'Settings', 4),
               ],
             ),
           ),
@@ -751,8 +879,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _buildNavItem(
-      IconData icon, IconData activeIcon, String label, int index) {
+  Widget _buildNavItem(String emoji, String label, int index) {
     final isSelected = _currentIndex == index;
     final color = isSelected
         ? Theme.of(context).colorScheme.primary
@@ -766,18 +893,14 @@ class _MainScreenState extends State<MainScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              isSelected ? activeIcon : icon,
-              color: color,
-              size: 24,
-            ),
+            EmojiIcon(emoji, size: 24),
             const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
                 color: color,
                 fontSize: 12,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                fontWeight: isSelected ? FontWeight.w800 : FontWeight.w500,
               ),
             ),
           ],
@@ -883,15 +1006,13 @@ class _HomeScreenState extends State<HomeScreen> {
     'Leg',
   ];
 
-  final Map<String, IconData> _moodIcons = {
-    'Happy': Icons.sentiment_satisfied_outlined,
-    'Calm': Icons.spa_outlined,
-    'Neutral': Icons.sentiment_neutral_outlined,
-    'Tired': Icons.nights_stay_outlined,
-    'Stressed': Icons.cloud_outlined,
-    'Anxious': Icons.warning_amber_outlined,
-    'Sad': Icons.sentiment_dissatisfied_outlined,
-    'Irritable': Icons.sentiment_very_dissatisfied_outlined,
+  final Map<String, String> _moodEmoji = {
+    'Happy': '😊',
+    'Calm': '🧘',
+    'Neutral': '😐',
+    'Tired': '😴',
+    'Stressed': '😰',
+    'Anxious': '😟',
   };
 
   final List<String> _moods = [
@@ -964,10 +1085,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Color _symptomChipBackgroundColor(ThemeData theme, bool isSelected) {
-    if (isSelected) return theme.colorScheme.primaryContainer;
+    if (isSelected) return _AppPalette.aqua;
     return theme.brightness == Brightness.dark
         ? const Color(0xFF2B3035)
-        : const Color(0xFFFFFFFF);
+        : const Color(0xFFF5F5F5);
   }
 
   Future<void> _pickImage() async {
@@ -1079,7 +1200,7 @@ class _HomeScreenState extends State<HomeScreen> {
       slivers: [
         SliverToBoxAdapter(
           child: Container(
-            padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
+            padding: const EdgeInsets.fromLTRB(24, 58, 24, 24),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -1100,8 +1221,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text(
                       _userName == null ? 'Hello!' : 'Hello, $_userName!',
                       style: theme.textTheme.titleLarge?.copyWith(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -1109,6 +1230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       'How are you feeling today?',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
+                        fontSize: 16,
                       ),
                     ),
                   ],
@@ -1125,282 +1247,295 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         SliverToBoxAdapter(
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Pain Level',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+          child: SoftCard(
+            margin: const EdgeInsets.fromLTRB(
+              _screenHPadding,
+              28,
+              _screenHPadding,
+              18,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SectionTitle('Pain Level'),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: painColor.withValues(alpha: 0.18),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        _getPainLabel(_painLevel),
+                        style: TextStyle(
+                          color: painColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: painColor.withValues(alpha: 0.18),
-                          borderRadius: BorderRadius.circular(20),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 28),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SliderTheme(
+                        data: theme.sliderTheme.copyWith(
+                          activeTrackColor: painColor,
+                          thumbColor: painColor,
                         ),
-                        child: Text(
-                          _getPainLabel(_painLevel),
-                          style: TextStyle(
-                            color: painColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SliderTheme(
-                          data: theme.sliderTheme.copyWith(
-                            activeTrackColor: painColor,
-                            thumbColor: painColor,
-                          ),
-                          child: Slider(
-                            value: _painLevel,
-                            min: 0,
-                            max: 10,
-                            divisions: 10,
-                            onChanged: (value) =>
-                                setState(() => _painLevel = value),
-                          ),
+                        child: Slider(
+                          value: _painLevel,
+                          min: 0,
+                          max: 10,
+                          divisions: 10,
+                          onChanged: (value) =>
+                              setState(() => _painLevel = value),
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              painColor,
-                              painColor.withValues(alpha: 0.7),
-                            ],
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: painColor.withValues(alpha: 0.4),
-                              blurRadius: 10,
-                              offset: const Offset(0, 4),
-                            ),
+                    ),
+                    const SizedBox(width: 16),
+                    Container(
+                      width: 64,
+                      height: 64,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            painColor,
+                            painColor.withValues(alpha: 0.7),
                           ],
                         ),
-                        child: Center(
-                          child: Text(
-                            _painLevel.round().toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                            ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: painColor.withValues(alpha: 0.4),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          _painLevel.round().toString(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.w800,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('0', style: theme.textTheme.bodySmall),
-                      Text('10', style: theme.textTheme.bodySmall),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('0',
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant)),
+                    Text('10',
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant)),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
         SliverToBoxAdapter(
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Body Area',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: _bodyAreas.map((area) {
-                      final isSelected = _selectedBodyArea == area;
-                      return ChoiceChip(
-                        label: Text(area),
-                        selected: isSelected,
-                        showCheckmark: false,
-                        backgroundColor:
-                            _symptomChipBackgroundColor(theme, false),
-                        selectedColor: _symptomChipBackgroundColor(theme, true),
-                        side: BorderSide.none,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+          child: SoftCard(
+            margin: const EdgeInsets.fromLTRB(
+              _screenHPadding,
+              0,
+              _screenHPadding,
+              18,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SectionTitle('Body Area'),
+                const SizedBox(height: 22),
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 14,
+                  children: _bodyAreas.map((area) {
+                    final isSelected = _selectedBodyArea == area;
+                    return ChoiceChip(
+                      label: Text(area),
+                      selected: isSelected,
+                      showCheckmark: false,
+                      backgroundColor:
+                          _symptomChipBackgroundColor(theme, false),
+                      selectedColor: _symptomChipBackgroundColor(theme, true),
+                      side: BorderSide.none,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 9,
+                      ),
+                      labelStyle: TextStyle(
+                        color: _symptomChipForegroundColor(
+                          theme,
+                          isSelected,
                         ),
-                        labelStyle: TextStyle(
-                          color: _symptomChipForegroundColor(
-                            theme,
-                            isSelected,
-                          ),
-                          fontWeight:
-                              isSelected ? FontWeight.w600 : FontWeight.w400,
-                        ),
-                        onSelected: (_) =>
-                            setState(() => _selectedBodyArea = area),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
+                        fontSize: 16,
+                        fontWeight:
+                            isSelected ? FontWeight.w800 : FontWeight.w400,
+                      ),
+                      onSelected: (_) =>
+                          setState(() => _selectedBodyArea = area),
+                    );
+                  }).toList(),
+                ),
+              ],
             ),
           ),
         ),
         SliverToBoxAdapter(
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Mood',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: _moods.map((mood) {
-                      final isSelected = _selectedMood == mood;
-                      final labelColor =
-                          _symptomChipForegroundColor(theme, isSelected);
-                      return ChoiceChip(
-                        avatar: Icon(
-                          _moodIcons[mood],
-                          size: 16,
-                          color: labelColor,
-                        ),
-                        label: Text(mood),
-                        selected: isSelected,
-                        showCheckmark: false,
-                        backgroundColor:
-                            _symptomChipBackgroundColor(theme, false),
-                        selectedColor: _symptomChipBackgroundColor(theme, true),
-                        side: BorderSide.none,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        labelStyle: TextStyle(
-                          color: labelColor,
-                          fontWeight:
-                              isSelected ? FontWeight.w600 : FontWeight.w400,
-                        ),
-                        onSelected: (_) => setState(() => _selectedMood = mood),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
+          child: SoftCard(
+            margin: const EdgeInsets.fromLTRB(
+              _screenHPadding,
+              0,
+              _screenHPadding,
+              18,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SectionTitle('Mood'),
+                const SizedBox(height: 22),
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 14,
+                  children: _moods.map((mood) {
+                    final isSelected = _selectedMood == mood;
+                    final labelColor =
+                        _symptomChipForegroundColor(theme, isSelected);
+                    return ChoiceChip(
+                      avatar: Text(
+                        _moodEmoji[mood] ?? '',
+                        style: const TextStyle(fontSize: 17),
+                      ),
+                      label: Text(mood),
+                      selected: isSelected,
+                      showCheckmark: false,
+                      backgroundColor:
+                          _symptomChipBackgroundColor(theme, false),
+                      selectedColor: _symptomChipBackgroundColor(theme, true),
+                      side: BorderSide.none,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 9,
+                      ),
+                      labelStyle: TextStyle(
+                        color: labelColor,
+                        fontSize: 16,
+                        fontWeight:
+                            isSelected ? FontWeight.w800 : FontWeight.w400,
+                      ),
+                      onSelected: (_) => setState(() => _selectedMood = mood),
+                    );
+                  }).toList(),
+                ),
+              ],
             ),
           ),
         ),
         SliverToBoxAdapter(
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Notes',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+          child: SoftCard(
+            margin: const EdgeInsets.fromLTRB(
+              _screenHPadding,
+              0,
+              _screenHPadding,
+              18,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SectionTitle('Notes'),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: _notesController,
+                  maxLines: 4,
+                  decoration: const InputDecoration(
+                    hintText:
+                        'Add any additional details about how you feel...',
                   ),
-                  const SizedBox(height: 12),
-                  TextField(
-                    controller: _notesController,
-                    maxLines: 4,
-                    decoration: const InputDecoration(
-                      hintText:
-                          'Add any additional details about how you feel...',
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
         if (_photoPath != null)
           SliverToBoxAdapter(
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Photo Attached',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
+            child: SoftCard(
+              margin: const EdgeInsets.fromLTRB(
+                _screenHPadding,
+                0,
+                _screenHPadding,
+                18,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Photo Attached',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => setState(() {
+                          _photoPath = null;
+                          _photoBytesBase64 = null;
+                          _photoPreviewBytes = null;
+                        }),
+                        icon: const Icon(Icons.delete_outline),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: kIsWeb && _photoPreviewBytes != null
+                        ? Image.memory(
+                            _photoPreviewBytes!,
+                            height: 200,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            File(_photoPath!),
+                            height: 200,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () => setState(() {
-                            _photoPath = null;
-                            _photoBytesBase64 = null;
-                            _photoPreviewBytes = null;
-                          }),
-                          icon: const Icon(Icons.delete_outline),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: kIsWeb && _photoPreviewBytes != null
-                          ? Image.memory(
-                              _photoPreviewBytes!,
-                              height: 200,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.file(
-                              File(_photoPath!),
-                              height: 200,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            padding: const EdgeInsets.fromLTRB(
+              _screenHPadding,
+              0,
+              _screenHPadding,
+              16,
+            ),
             child: OutlinedButton.icon(
               onPressed: _pickImage,
               icon: const Icon(Icons.camera_alt, size: 18),
@@ -1410,7 +1545,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+            padding: const EdgeInsets.fromLTRB(
+              _screenHPadding,
+              0,
+              _screenHPadding,
+              28,
+            ),
             child: ElevatedButton.icon(
               onPressed: _saveEntry,
               icon: const Icon(Icons.save, size: 20),
@@ -1671,22 +1811,39 @@ class _HistoryScreenState extends State<HistoryScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
-            child: TextField(
-              controller: _searchController,
-              onChanged: _filterEntries,
-              decoration: InputDecoration(
-                hintText: 'Search entries...',
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: _searchController.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchController.clear();
-                          _filterEntries('');
-                        },
-                      )
-                    : null,
+            padding: const EdgeInsets.fromLTRB(
+              _screenHPadding,
+              2,
+              _screenHPadding,
+              22,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: _softShadow(context, opacity: 0.08),
+              ),
+              child: TextField(
+                controller: _searchController,
+                onChanged: _filterEntries,
+                style: const TextStyle(fontSize: 16),
+                decoration: InputDecoration(
+                  hintText: 'Search entries...',
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.only(left: 18, right: 10),
+                    child: EmojiIcon('🔍', size: 21),
+                  ),
+                  prefixIconConstraints:
+                      const BoxConstraints(minWidth: 62, minHeight: 52),
+                  suffixIcon: _searchController.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            _searchController.clear();
+                            _filterEntries('');
+                          },
+                        )
+                      : null,
+                ),
               ),
             ),
           ),
@@ -1713,7 +1870,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     ),
                   )
                 : ListView.builder(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    padding: const EdgeInsets.fromLTRB(
+                      _screenHPadding,
+                      0,
+                      _screenHPadding,
+                      18,
+                    ),
                     itemCount: _filteredEntries.length,
                     itemBuilder: (context, index) {
                       final entry = _filteredEntries[index];
@@ -1724,18 +1886,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       final hasPhoto = entry['photo_path'] != null &&
                           entry['photo_path'].toString().isNotEmpty;
 
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 8),
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 18),
                         child: InkWell(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(_cardRadius),
                           onTap: () => _showEntryDetails(entry),
-                          child: Padding(
-                            padding: const EdgeInsets.all(14),
+                          child: SoftCard(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 16,
+                            ),
                             child: Row(
                               children: [
                                 Container(
-                                  width: 44,
-                                  height: 44,
+                                  width: 48,
+                                  height: 48,
                                   decoration: BoxDecoration(
                                     color: painColor,
                                     shape: BoxShape.circle,
@@ -1745,12 +1910,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     '$painLevel',
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w800,
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                const SizedBox(width: 28),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
@@ -1760,15 +1925,20 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         '${entry['body_area']} - ${entry['mood']}',
                                         style: theme.textTheme.bodyMedium
                                             ?.copyWith(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w800,
                                         ),
                                       ),
                                       const SizedBox(height: 2),
                                       Text(
                                         DateFormat('yyyy-MM-dd HH:mm')
                                             .format(date),
-                                        style: theme.textTheme.bodySmall,
+                                        style:
+                                            theme.textTheme.bodyLarge?.copyWith(
+                                          color: theme
+                                              .colorScheme.onSurfaceVariant,
+                                          fontSize: 14,
+                                        ),
                                       ),
                                       if (note.isNotEmpty) ...[
                                         const SizedBox(height: 2),
@@ -1776,7 +1946,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                           note,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
-                                          style: theme.textTheme.bodySmall,
+                                          style: theme.textTheme.bodyLarge
+                                              ?.copyWith(
+                                            color: theme
+                                                .colorScheme.onSurfaceVariant,
+                                            fontSize: 14,
+                                          ),
                                         ),
                                       ],
                                     ],
@@ -1784,11 +1959,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 ),
                                 if (hasPhoto) ...[
                                   const SizedBox(width: 8),
-                                  Icon(
-                                    Icons.photo_camera_outlined,
-                                    size: 20,
-                                    color: theme.colorScheme.onSurfaceVariant,
-                                  ),
+                                  const EmojiIcon('📷', size: 22),
                                 ],
                               ],
                             ),
@@ -1874,57 +2045,52 @@ class _StatsScreenState extends State<StatsScreen>
     }).toList();
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(
+        _screenHPadding,
+        28,
+        _screenHPadding,
+        24,
+      ),
       children: [
-        Card(
-          margin: EdgeInsets.zero,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Pain Trend Over Time',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(fontWeight: FontWeight.w600),
+        SoftCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SectionTitle('Pain Trend Over Time'),
+              const SizedBox(height: 26),
+              Container(
+                height: 220,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? const Color(0xFF1E1E1E)
+                      : const Color(0xFFF5F5F5),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                const SizedBox(height: 12),
-                Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? const Color(0xFF1E1E1E)
-                        : const Color(0xFFF5F5F5),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.all(20),
-                  child: LineChart(
-                    LineChartData(
-                      gridData: FlGridData(show: false),
-                      titlesData: FlTitlesData(show: false),
-                      borderData: FlBorderData(show: false),
-                      minY: 0,
-                      maxY: 10,
-                      lineBarsData: [
-                        LineChartBarData(
-                          spots: spots,
-                          isCurved: false,
-                          color: Theme.of(context).colorScheme.primary,
-                          barWidth: 3,
-                          dotData: FlDotData(show: true),
-                          belowBarData: BarAreaData(show: false),
-                        ),
-                      ],
-                    ),
+                padding: const EdgeInsets.all(20),
+                child: LineChart(
+                  LineChartData(
+                    gridData: FlGridData(show: false),
+                    titlesData: FlTitlesData(show: false),
+                    borderData: FlBorderData(show: false),
+                    minY: 0,
+                    maxY: 10,
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: spots,
+                        isCurved: false,
+                        color: Theme.of(context).colorScheme.primary,
+                        barWidth: 3,
+                        dotData: FlDotData(show: true),
+                        belowBarData: BarAreaData(show: false),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 26),
         _buildQuickSummaryCard(),
       ],
     );
@@ -1959,66 +2125,61 @@ class _StatsScreenState extends State<StatsScreen>
     }).toList();
 
     return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Avg Pain by Body Area',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge
-                    ?.copyWith(fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                height: 250,
-                child: BarChart(
-                  BarChartData(
-                    gridData: FlGridData(show: true, drawVerticalLine: false),
-                    titlesData: FlTitlesData(
-                      leftTitles: AxisTitles(
-                        sideTitles:
-                            SideTitles(showTitles: true, reservedSize: 30),
-                      ),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: (value, meta) {
-                            final index = value.toInt();
-                            if (index >= 0 && index < areaData.length) {
-                              final area = areaData.keys.elementAt(index);
-                              final label = area.length <= 4
-                                  ? area
-                                  : area.substring(0, 4);
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 8),
-                                child: Text(
-                                  label,
-                                  style: const TextStyle(fontSize: 10),
-                                ),
-                              );
-                            }
-                            return const Text('');
-                          },
-                        ),
-                      ),
-                      rightTitles:
-                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      topTitles:
-                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      padding: const EdgeInsets.fromLTRB(
+        _screenHPadding,
+        28,
+        _screenHPadding,
+        24,
+      ),
+      child: SoftCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SectionTitle('Avg Pain by Body Area'),
+            const SizedBox(height: 24),
+            SizedBox(
+              height: 250,
+              child: BarChart(
+                BarChartData(
+                  gridData: FlGridData(show: true, drawVerticalLine: false),
+                  titlesData: FlTitlesData(
+                    leftTitles: AxisTitles(
+                      sideTitles:
+                          SideTitles(showTitles: true, reservedSize: 30),
                     ),
-                    borderData: FlBorderData(show: false),
-                    maxY: 10,
-                    barGroups: barGroups,
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          final index = value.toInt();
+                          if (index >= 0 && index < areaData.length) {
+                            final area = areaData.keys.elementAt(index);
+                            final label =
+                                area.length <= 4 ? area : area.substring(0, 4);
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: Text(
+                                label,
+                                style: const TextStyle(fontSize: 10),
+                              ),
+                            );
+                          }
+                          return const Text('');
+                        },
+                      ),
+                    ),
+                    rightTitles:
+                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles:
+                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   ),
+                  borderData: FlBorderData(show: false),
+                  maxY: 10,
+                  barGroups: barGroups,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -2037,30 +2198,21 @@ class _StatsScreenState extends State<StatsScreen>
       _StatItem(Icons.warning_amber_outlined, 'Highest Pain', '$maxPain/10'),
     ];
 
-    return Card(
-      margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Quick Summary',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+    return SoftCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SectionTitle('Quick Summary'),
+          const SizedBox(height: 20),
+          ...stats.map(
+            (stat) => _PreviewStatRow(
+              icon: stat.icon,
+              label: stat.label,
+              value: stat.value,
+              valueColor: theme.colorScheme.onSurface,
             ),
-            const SizedBox(height: 12),
-            ...stats.map(
-              (stat) => _PreviewStatRow(
-                icon: stat.icon,
-                label: stat.label,
-                value: stat.value,
-                valueColor: theme.colorScheme.onSurface,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -2094,9 +2246,17 @@ class _StatsScreenState extends State<StatsScreen>
         title: const Text('Statistics'),
         bottom: TabBar(
           controller: _tabController,
+          labelColor: Theme.of(context).colorScheme.primary,
+          unselectedLabelColor: Theme.of(context).colorScheme.onSurfaceVariant,
+          labelStyle:
+              const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+          unselectedLabelStyle:
+              const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          indicatorColor: Theme.of(context).colorScheme.primary,
+          indicatorWeight: 4,
           tabs: const [
-            Tab(icon: Icon(Icons.show_chart), text: 'Trend'),
-            Tab(icon: Icon(Icons.bar_chart), text: 'By Area'),
+            Tab(icon: EmojiIcon('📈', size: 20), text: 'Trend'),
+            Tab(icon: EmojiIcon('📊', size: 20), text: 'By Area'),
           ],
         ),
       ),
@@ -2136,15 +2296,28 @@ class _InsightsScreenState extends State<InsightsScreen> {
   Future<void> _loadEntries({bool forceGenerate = false}) async {
     final entries = await DatabaseHelper.getEntries();
     InsightPayload? payload;
-    String source = 'Local fallback';
+    String source = 'Preparing AI';
     final signature = _entrySignature(entries);
 
-    final cached = await AppBackend.latestAiInsight();
-    if (cached != null) {
-      payload = _payloadFromCached(cached);
-      source = 'Cached AI';
-    } else {
+    final preloaded = AppBackend.preloadedAiInsight;
+    if (!forceGenerate &&
+        preloaded != null &&
+        preloaded.model != 'local-fallback') {
+      payload = preloaded;
+      source = AppBackend.preloadedAiInsightSource;
+      _lastGeneratedSignature = signature;
+    } else if (!forceGenerate) {
+      final cached = await AppBackend.latestAiInsight();
+      if (cached != null) {
+        payload = _payloadFromCached(cached);
+        source = 'Cached AI';
+      } else if (entries.isEmpty) {
+        payload = HealthAnalytics.fallbackInsight(entries);
+        source = 'Local fallback';
+      }
+    } else if (entries.isEmpty) {
       payload = HealthAnalytics.fallbackInsight(entries);
+      source = 'Local fallback';
     }
 
     if (!mounted) return;
@@ -2154,7 +2327,9 @@ class _InsightsScreenState extends State<InsightsScreen> {
       _insightSource = source;
     });
     if (entries.isNotEmpty &&
-        (forceGenerate || signature != _lastGeneratedSignature)) {
+        (forceGenerate ||
+            payload == null ||
+            signature != _lastGeneratedSignature)) {
       unawaited(_generateAiInsight(signature: signature));
     }
   }
@@ -2184,7 +2359,11 @@ class _InsightsScreenState extends State<InsightsScreen> {
   Future<void> _generateAiInsight({required String signature}) async {
     if (_entries.isEmpty || _isGenerating) return;
     setState(() => _isGenerating = true);
-    final payload = await AiInsightService.generate(entries: _entries);
+    final payload = await AiInsightService.generate(
+      entries: _entries,
+      remoteEnabled: AppBackend.isRemoteEnabled,
+      accessToken: AppBackend.remote?.accessToken,
+    );
     if (!mounted) return;
     setState(() {
       _insight = payload;
@@ -2199,7 +2378,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final insight = _insight ?? HealthAnalytics.fallbackInsight(_entries);
+    final insight = _insight;
 
     return Scaffold(
       appBar: AppBar(
@@ -2230,61 +2409,102 @@ class _InsightsScreenState extends State<InsightsScreen> {
               ),
             )
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(
+                _screenHPadding,
+                28,
+                _screenHPadding,
+                24,
+              ),
               child: Column(
                 children: [
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.primary,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Icon(
-                              Icons.psychology,
-                              color: theme.colorScheme.onPrimary,
-                              size: 28,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'AI Analysis',
-                                  style: theme.textTheme.titleLarge
-                                      ?.copyWith(fontWeight: FontWeight.w600),
-                                ),
-                                Text(
-                                  _isGenerating
-                                      ? 'Analyzing automatically - based on ${_entries.length} entries'
-                                      : '$_insightSource - based on ${_entries.length} entries',
-                                  style: theme.textTheme.bodyMedium?.copyWith(
-                                      color:
-                                          theme.colorScheme.onSurfaceVariant),
-                                ),
-                              ],
-                            ),
-                          ),
-                          if (_isGenerating)
-                            const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            ),
-                        ],
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 18,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(_cardRadius),
+                      gradient: const LinearGradient(
+                        colors: [_AppPalette.aqua, _AppPalette.aquaSoft],
                       ),
+                      boxShadow: _softShadow(context, opacity: 0.08),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary,
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: const Center(
+                            child: EmojiIcon('🧠', size: 30),
+                          ),
+                        ),
+                        const SizedBox(width: 18),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'AI Analysis',
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  color: _AppPalette.text,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              Text(
+                                _isGenerating
+                                    ? 'Analyzing automatically - based on ${_entries.length} entries'
+                                    : '$_insightSource - based on ${_entries.length} entries',
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: _AppPalette.muted,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (_isGenerating)
+                          const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  _buildAnalysisCard(insight),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 28),
+                  if (insight == null)
+                    SoftCard(
+                      child: Column(
+                        children: [
+                          CircularProgressIndicator(
+                            color: theme.colorScheme.primary,
+                          ),
+                          const SizedBox(height: 14),
+                          Text(
+                            'Preparing AI analysis...',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            'Local fallback will appear if AI is unavailable.',
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  else
+                    _buildAnalysisCard(insight),
+                  const SizedBox(height: 28),
                   _buildQuickStats(),
                 ],
               ),
@@ -2322,47 +2542,49 @@ class _InsightsScreenState extends State<InsightsScreen> {
       ...insight.careGuidance,
     ];
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: DefaultTextStyle(
-          style: theme.textTheme.bodyMedium!.copyWith(height: 1.55),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Health Pattern Analysis',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+    return SoftCard(
+      padding: const EdgeInsets.all(20),
+      child: DefaultTextStyle(
+        style: theme.textTheme.bodyMedium!.copyWith(
+          height: 1.55,
+          fontSize: 16,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Health Pattern Analysis',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
               ),
-              const SizedBox(height: 16),
-              Text(
-                'Overall Statistics:',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Overall Statistics:',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w700,
               ),
-              Text('- Total entries: ${_entries.length}'),
-              Text('- Average pain level: ${avgPain.toStringAsFixed(1)}/10'),
-              Text(
-                '- Recent 7-day average: ${stats.averagePainThisWeek == null ? 'No logs' : '${stats.averagePainThisWeek!.toStringAsFixed(1)}/10'}',
+            ),
+            Text('- Total entries: ${_entries.length}'),
+            Text('- Average pain level: ${avgPain.toStringAsFixed(1)}/10'),
+            Text(
+              '- Recent 7-day average: ${stats.averagePainThisWeek == null ? 'No logs' : '${stats.averagePainThisWeek!.toStringAsFixed(1)}/10'}',
+            ),
+            const SizedBox(height: 16),
+            Text('Most affected area: ${avgLabel(mostAffected)}'),
+            Text('Most common during: ${avgLabel(mostCommonMood)}'),
+            const SizedBox(height: 16),
+            Text('Trend: ${insight.summary}'),
+            const SizedBox(height: 16),
+            Text(
+              'Recommendations:',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w700,
               ),
-              const SizedBox(height: 16),
-              Text('Most affected area: ${avgLabel(mostAffected)}'),
-              Text('Most common during: ${avgLabel(mostCommonMood)}'),
-              const SizedBox(height: 16),
-              Text('Trend: ${insight.summary}'),
-              const SizedBox(height: 16),
-              Text(
-                'Recommendations:',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              ...recommendations.take(5).map((item) => Text('- $item')),
-            ],
-          ),
+            ),
+            ...recommendations.take(5).map((item) => Text('- $item')),
+          ],
         ),
       ),
     );
@@ -2395,30 +2617,21 @@ class _InsightsScreenState extends State<InsightsScreen> {
       _StatItem(Icons.mood_outlined, 'Most Common Mood', mostCommonMood),
     ];
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Quick Stats',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(fontWeight: FontWeight.w600),
+    return SoftCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SectionTitle('Quick Stats'),
+          const SizedBox(height: 16),
+          ...stats.map(
+            (stat) => _PreviewStatRow(
+              icon: stat.icon,
+              label: stat.label,
+              value: stat.value,
+              valueColor: Theme.of(context).colorScheme.primary,
             ),
-            const SizedBox(height: 16),
-            ...stats.map(
-              (stat) => _PreviewStatRow(
-                icon: stat.icon,
-                label: stat.label,
-                value: stat.value,
-                valueColor: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -2448,7 +2661,7 @@ class _PreviewStatRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(color: theme.colorScheme.outline),
@@ -2456,13 +2669,14 @@ class _PreviewStatRow extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: theme.colorScheme.primary),
-          const SizedBox(width: 12),
+          Icon(icon, size: 21, color: theme.colorScheme.primary),
+          const SizedBox(width: 14),
           Expanded(
             child: Text(
               label,
               style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
@@ -2470,7 +2684,8 @@ class _PreviewStatRow extends StatelessWidget {
             value,
             style: theme.textTheme.titleMedium?.copyWith(
               color: valueColor ?? theme.colorScheme.onSurface,
-              fontWeight: FontWeight.w700,
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
             ),
           ),
         ],
@@ -2642,10 +2857,18 @@ class _SettingsScreenState extends State<SettingsScreen>
         title: const Text('Settings'),
         bottom: TabBar(
           controller: _tabController,
+          labelColor: Theme.of(context).colorScheme.primary,
+          unselectedLabelColor: Theme.of(context).colorScheme.onSurfaceVariant,
+          labelStyle:
+              const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+          unselectedLabelStyle:
+              const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+          indicatorColor: Theme.of(context).colorScheme.primary,
+          indicatorWeight: 4,
           tabs: const [
-            Tab(icon: Icon(Icons.settings), text: 'General'),
-            Tab(icon: Icon(Icons.medication), text: 'Meds'),
-            Tab(icon: Icon(Icons.calendar_today), text: 'Calendar'),
+            Tab(icon: EmojiIcon('⚙️', size: 19), text: 'General'),
+            Tab(icon: EmojiIcon('💊', size: 19), text: 'Meds'),
+            Tab(icon: EmojiIcon('📅', size: 19), text: 'Calendar'),
           ],
         ),
       ),
@@ -2662,26 +2885,31 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   Widget _buildGeneralTab(ThemeData theme) {
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(
+        _screenHPadding,
+        28,
+        _screenHPadding,
+        24,
+      ),
       children: [
-        Card(
-          margin: EdgeInsets.zero,
+        SoftCard(
+          padding: EdgeInsets.zero,
           child: _settingsItem(
             theme: theme,
-            icon: Icons.person_outline,
+            icon: Icons.person,
             title: 'Profile',
-            subtitle: _userName ?? 'Tap to set your name',
+            subtitle: _userName ?? 'John Doe',
             trailing: const Icon(Icons.chevron_right),
             onTap: _showNameDialog,
           ),
         ),
-        const SizedBox(height: 12),
-        Card(
-          margin: EdgeInsets.zero,
+        const SizedBox(height: 18),
+        SoftCard(
+          padding: EdgeInsets.zero,
           child: _settingsItem(
             theme: theme,
-            icon: Icons.dark_mode_outlined,
-            iconBackground: theme.colorScheme.primary.withValues(alpha: 0.10),
+            icon: Icons.nights_stay,
+            iconBackground: _AppPalette.aquaSoft,
             title: 'Dark Mode',
             subtitle: 'Toggle between light and dark theme',
             trailing: Switch(
@@ -2690,14 +2918,14 @@ class _SettingsScreenState extends State<SettingsScreen>
             ),
           ),
         ),
-        const SizedBox(height: 12),
-        Card(
-          margin: EdgeInsets.zero,
+        const SizedBox(height: 18),
+        SoftCard(
+          padding: EdgeInsets.zero,
           child: Column(
             children: [
               _settingsItem(
                 theme: theme,
-                icon: Icons.file_download_outlined,
+                icon: Icons.file_download,
                 iconBackground: const Color(0xFF4CAF50).withValues(alpha: 0.10),
                 title: 'Export to CSV',
                 subtitle: 'Share your data as spreadsheet',
@@ -2712,7 +2940,7 @@ class _SettingsScreenState extends State<SettingsScreen>
               ),
               _settingsItem(
                 theme: theme,
-                icon: Icons.picture_as_pdf_outlined,
+                icon: Icons.description_outlined,
                 iconBackground: const Color(0xFFF44336).withValues(alpha: 0.10),
                 title: 'Export to PDF',
                 subtitle: 'Generate printable report',
@@ -2722,12 +2950,12 @@ class _SettingsScreenState extends State<SettingsScreen>
             ],
           ),
         ),
-        const SizedBox(height: 12),
-        Card(
-          margin: EdgeInsets.zero,
+        const SizedBox(height: 18),
+        SoftCard(
+          padding: EdgeInsets.zero,
           child: _settingsItem(
             theme: theme,
-            icon: Icons.info_outline,
+            icon: Icons.info,
             title: 'About',
             subtitle: 'Symptom Tracker v1.0',
           ),
@@ -2753,12 +2981,12 @@ class _SettingsScreenState extends State<SettingsScreen>
         child: Row(
           children: [
             CircleAvatar(
-              radius: 20,
+              radius: 24,
               backgroundColor: iconBackground ??
                   (theme.brightness == Brightness.dark
                       ? const Color(0xFF1E1E1E)
                       : const Color(0xFFF5F5F5)),
-              child: Icon(icon, color: theme.colorScheme.primary, size: 20),
+              child: Icon(icon, color: theme.colorScheme.primary, size: 24),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -2768,8 +2996,8 @@ class _SettingsScreenState extends State<SettingsScreen>
                   Text(
                     title,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -2777,6 +3005,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                     subtitle,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
+                      fontSize: 14,
                     ),
                   ),
                 ],
@@ -2890,36 +3119,59 @@ class _MedicationsTabState extends State<MedicationsTab> {
               ),
             )
           : ListView.builder(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(
+                _screenHPadding,
+                28,
+                _screenHPadding,
+                90,
+              ),
               itemCount: _medications.length,
               itemBuilder: (context, index) {
                 final med = _medications[index];
                 final isActive = med['is_active'] == 1;
 
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  child: ListTile(
-                    leading: Icon(
-                      isActive ? Icons.check_circle : Icons.cancel,
-                      color: isActive
-                          ? theme.colorScheme.primary
-                          : theme.colorScheme.onSurfaceVariant,
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 18),
+                  child: SoftCard(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
                     ),
-                    title: Text(med['name']),
-                    subtitle: Text('${med['dosage']} - ${med['frequency']}'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Switch(
-                          value: isActive,
-                          onChanged: (v) => _toggleMedication(med['id'], v),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: CircleAvatar(
+                        radius: 22,
+                        backgroundColor:
+                            theme.colorScheme.primary.withValues(alpha: 0.12),
+                        child: Icon(
+                          isActive ? Icons.check_circle : Icons.cancel,
+                          color: isActive
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.onSurfaceVariant,
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.delete_outline,
-                              color: Colors.red),
-                          onPressed: () => _deleteMedication(med['id']),
+                      ),
+                      title: Text(
+                        med['name'],
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
                         ),
-                      ],
+                      ),
+                      subtitle: Text('${med['dosage']} - ${med['frequency']}'),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Switch(
+                            value: isActive,
+                            onChanged: (v) => _toggleMedication(med['id'], v),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete_outline,
+                                color: Colors.red),
+                            onPressed: () => _deleteMedication(med['id']),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -3033,27 +3285,46 @@ class _CalendarTabState extends State<CalendarTab> {
     return Scaffold(
       body: Column(
         children: [
-          TableCalendar(
-            firstDay: DateTime.utc(2020, 1, 1),
-            lastDay: DateTime.utc(2030, 12, 31),
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
-              });
-            },
-            onFormatChanged: (format) {
-              setState(() => _calendarFormat = format);
-            },
-            onPageChanged: (focusedDay) => _focusedDay = focusedDay,
-            eventLoader: _getAppointmentsForDay,
-            calendarStyle: CalendarStyle(
-              markerDecoration: BoxDecoration(
-                color: theme.colorScheme.primary,
-                shape: BoxShape.circle,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              _screenHPadding,
+              28,
+              _screenHPadding,
+              8,
+            ),
+            child: SoftCard(
+              padding: const EdgeInsets.all(10),
+              child: TableCalendar(
+                firstDay: DateTime.utc(2020, 1, 1),
+                lastDay: DateTime.utc(2030, 12, 31),
+                focusedDay: _focusedDay,
+                calendarFormat: _calendarFormat,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                onDaySelected: (selectedDay, focusedDay) {
+                  setState(() {
+                    _selectedDay = selectedDay;
+                    _focusedDay = focusedDay;
+                  });
+                },
+                onFormatChanged: (format) {
+                  setState(() => _calendarFormat = format);
+                },
+                onPageChanged: (focusedDay) => _focusedDay = focusedDay,
+                eventLoader: _getAppointmentsForDay,
+                calendarStyle: CalendarStyle(
+                  selectedDecoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  todayDecoration: BoxDecoration(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.22),
+                    shape: BoxShape.circle,
+                  ),
+                  markerDecoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    shape: BoxShape.circle,
+                  ),
+                ),
               ),
             ),
           ),
@@ -3074,21 +3345,30 @@ class _CalendarTabState extends State<CalendarTab> {
                   );
                 }
                 return ListView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.fromLTRB(
+                    _screenHPadding,
+                    16,
+                    _screenHPadding,
+                    90,
+                  ),
                   itemCount: dayApts.length,
                   itemBuilder: (context, index) {
                     final apt = dayApts[index];
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      child: ListTile(
-                        leading:
-                            Icon(Icons.event, color: theme.colorScheme.primary),
-                        title: Text(apt['title']),
-                        subtitle: Text('${apt['doctor']} - ${apt['time']}'),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete_outline,
-                              color: Colors.red),
-                          onPressed: () => _deleteAppointment(apt['id']),
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 18),
+                      child: SoftCard(
+                        padding: const EdgeInsets.all(18),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(Icons.event,
+                              color: theme.colorScheme.primary),
+                          title: Text(apt['title']),
+                          subtitle: Text('${apt['doctor']} - ${apt['time']}'),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete_outline,
+                                color: Colors.red),
+                            onPressed: () => _deleteAppointment(apt['id']),
+                          ),
                         ),
                       ),
                     );
