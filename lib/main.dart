@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:symptom_tracker/services/ai_insight_service.dart';
 import 'package:symptom_tracker/services/app_backend.dart';
 import 'package:symptom_tracker/services/health_analytics.dart';
+import 'package:symptom_tracker/services/symptom_triage.dart';
 import 'package:symptom_tracker/data/symptom_taxonomy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -1121,7 +1122,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
 
-    await DatabaseHelper.insertEntry({
+    final entry = <String, dynamic>{
       'pain_level': _painLevel.round(),
       'body_area': _selectedBodyArea,
       'mood': _selectedMood,
@@ -1132,7 +1133,9 @@ class _HomeScreenState extends State<HomeScreen> {
       'photo_path': _photoPath,
       'photo_bytes_base64': _photoBytesBase64,
       'timestamp': DateTime.now().toIso8601String(),
-    });
+    };
+    final triage = SymptomTriage.evaluate(entry);
+    await DatabaseHelper.insertEntry(entry);
 
     if (!mounted) return;
     setState(() {
@@ -1148,12 +1151,51 @@ class _HomeScreenState extends State<HomeScreen> {
       _photoPreviewBytes = null;
     });
 
+    if (triage.needsUrgentCarePrompt) {
+      await _showUrgentCarePrompt(triage);
+      return;
+    }
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text('Entry saved successfully!'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    );
+  }
+
+  Future<void> _showUrgentCarePrompt(TriageResult triage) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => AlertDialog(
+        icon: const Icon(Icons.warning_amber_rounded, color: Colors.red),
+        title: const Text('Please seek urgent medical care'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Your entry includes symptoms that can need urgent assessment. '
+              'If symptoms are severe, sudden, or worsening, contact local emergency services or go to the nearest emergency department now.',
+            ),
+            const SizedBox(height: 12),
+            ...triage.flags.map((flag) => Text('• $flag')),
+            const SizedBox(height: 12),
+            const Text(
+              'This app cannot diagnose an emergency or replace a medical practitioner.',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+        actions: [
+          FilledButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: const Text('I understand'),
+          ),
+        ],
       ),
     );
   }
@@ -1393,6 +1435,102 @@ class _HomeScreenState extends State<HomeScreen> {
                           setState(() => _selectedBodyArea = area),
                     );
                   }).toList(),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: SoftCard(
+            margin: const EdgeInsets.fromLTRB(
+              _screenHPadding,
+              0,
+              _screenHPadding,
+              18,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SectionTitle('Symptoms & temperature'),
+                const SizedBox(height: 8),
+                Text(
+                  'Select any symptoms that apply. Temperature is optional—use a home thermometer if you have one.',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 18),
+                ...symptomCategories.map(
+                  (category) => Padding(
+                    padding: const EdgeInsets.only(bottom: 14),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          category.name,
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: category.symptoms.map((symptom) {
+                            final selected = _selectedSymptoms.contains(symptom);
+                            return FilterChip(
+                              label: Text(symptom),
+                              selected: selected,
+                              onSelected: (value) => setState(() {
+                                if (value) {
+                                  _selectedSymptoms.add(symptom);
+                                } else {
+                                  _selectedSymptoms.remove(symptom);
+                                }
+                              }),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                TextField(
+                  controller: _customSymptomsController,
+                  textCapitalization: TextCapitalization.sentences,
+                  decoration: const InputDecoration(
+                    labelText: 'Other symptom (optional)',
+                    hintText: 'Describe a symptom not listed above',
+                  ),
+                ),
+                const SizedBox(height: 14),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _temperatureController,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        decoration: const InputDecoration(
+                          labelText: 'Temperature (optional)',
+                          hintText: 'e.g. 37.2',
+                          prefixIcon: Icon(Icons.thermostat_outlined),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    DropdownButton<String>(
+                      value: _temperatureUnit,
+                      onChanged: (value) => setState(
+                        () => _temperatureUnit = value ?? _temperatureUnit,
+                      ),
+                      items: const [
+                        DropdownMenuItem(value: 'C', child: Text('°C')),
+                        DropdownMenuItem(value: 'F', child: Text('°F')),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:symptom_tracker/services/health_analytics.dart';
+import 'package:symptom_tracker/services/symptom_triage.dart';
 
 void main() {
   test('weeklyStats compares this week and last week', () {
@@ -92,5 +93,16 @@ void main() {
     expect(frequency['Light sensitivity'], 1);
     expect(insight.patterns.join(' '), contains('Most common symptom: Fever'));
     expect(insight.redFlags.join(' '), contains('Very high fever'));
+  });
+
+  test('triage flags urgent symptoms without using an AI model', () {
+    final result = SymptomTriage.evaluate({
+      'pain_level': 5,
+      'notes': 'I have sudden shortness of breath',
+      'symptoms_json': '["Dizziness"]',
+    });
+
+    expect(result.needsUrgentCarePrompt, isTrue);
+    expect(result.flags.join(' '), contains('shortness of breath'));
   });
 }

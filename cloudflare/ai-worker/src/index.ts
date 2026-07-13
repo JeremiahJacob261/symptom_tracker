@@ -63,9 +63,16 @@ export default {
       }
 
       const safety = await reviewSafety(env, result);
-      result.safetyStatus = safety === "unsafe" || result.redFlags.length > 0
-        ? (result.redFlags.length > 0 ? "urgent" : "caution")
-        : result.safetyStatus;
+      if (safety === "unsafe" || containsUnsafeClinicalDirective(result)) {
+        // Do not show an output that may diagnose, prescribe, or discourage
+        // professional care. The deterministic fallback remains available.
+        result = {
+          ...fallback,
+          safetyStatus: fallback.redFlags.length > 0 ? "urgent" : "caution",
+        };
+      } else if (result.redFlags.length > 0) {
+        result.safetyStatus = "urgent";
+      }
 
       await persistResult(env, token, user.id, type, range, stats, result);
       return json(result);
@@ -189,11 +196,18 @@ function redFlags(entries: SymptomEntry[]) {
     "chest pain",
     "chest discomfort",
     "shortness of breath",
+    "difficulty breathing",
+    "trouble breathing",
     "faint",
     "numbness",
     "weakness",
     "confusion",
     "worst headache",
+    "severe bleeding",
+    "loss of consciousness",
+    "seizure",
+    "suicidal",
+    "self harm",
   ];
   const flags = new Set<string>();
   for (const entry of entries) {
@@ -373,6 +387,11 @@ function normalizeInsight(result: Record<string, unknown>, fallback: ReturnType<
     safetyStatus: String(result.safetyStatus ?? fallback.safetyStatus),
     model: String(result.model ?? fallback.model),
   };
+}
+
+function containsUnsafeClinicalDirective(result: Record<string, unknown>) {
+  const text = JSON.stringify(result).toLowerCase();
+  return /\b(you have|you are experiencing|diagnosis|diagnosed|prescribe|prescription|take \w+|start \w+|stop \w+|dosage|dose)\b/.test(text);
 }
 
 function parseJsonObject(text: string): Record<string, unknown> | null {

@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 
 import '../data/symptom_taxonomy.dart';
+import 'symptom_triage.dart';
 
 class WeeklyStats {
   const WeeklyStats({
@@ -185,43 +186,9 @@ class HealthAnalytics {
   }
 
   static List<String> redFlags(List<Map<String, dynamic>> entries) {
-    const urgentTerms = [
-      'chest pain',
-      'chest discomfort',
-      'shortness of breath',
-      'faint',
-      'fainted',
-      'numbness',
-      'weakness',
-      'confusion',
-      'worst headache',
-      'severe bleeding',
-    ];
-
     final flags = <String>{};
     for (final entry in entries) {
-      final pain = readPainLevel(entry);
-      final notes = (entry['notes'] ?? '').toString().toLowerCase();
-      final area = (entry['body_area'] ?? '').toString().toLowerCase();
-      final symptoms = [
-        ...readEntrySymptoms(entry),
-        readCustomSymptoms(entry),
-      ].join(' ').toLowerCase();
-      final temperature = readTemperatureCelsius(entry);
-      if (pain != null && pain >= 9) {
-        flags.add('Very high pain was recorded.');
-      }
-      if (area.contains('chest') || symptoms.contains('chest')) {
-        flags.add('Chest symptoms were recorded.');
-      }
-      if (temperature != null && temperature >= 39.4) {
-        flags.add('Very high fever was recorded.');
-      }
-      for (final term in urgentTerms) {
-        if (notes.contains(term) || symptoms.contains(term)) {
-          flags.add('Urgent symptom language was found: "$term".');
-        }
-      }
+      flags.addAll(SymptomTriage.evaluate(entry).flags);
     }
     return flags.toList();
   }
