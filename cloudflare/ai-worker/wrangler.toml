@@ -1,0 +1,14 @@
+name = "symptom-tracker-ai"
+main = "src/index.ts"
+compatibility_date = "2026-06-01"
+
+[ai]
+binding = "AI"
+
+[vars]
+DEEPSEEK_MODEL = "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"
+SAFETY_MODEL = "@cf/meta/llama-guard-3-8b"
+
+# Set these as encrypted secrets before deploy:
+# wrangler secret put SUPABASE_URL
+# wrangler secret put SUPABASE_PUBLISHABLE_KEY

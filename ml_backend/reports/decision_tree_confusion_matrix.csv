@@ -1,0 +1,25 @@
+,Acne,Arthritis,Bronchial Asthma,Cervical spondylosis,Chicken pox,Common Cold,Dengue,Dimorphic Hemorrhoids,Fungal infection,Hypertension,Impetigo,Jaundice,Malaria,Migraine,Pneumonia,Psoriasis,Typhoid,Varicose Veins,allergy,diabetes,drug reaction,gastroesophageal reflux disease,peptic ulcer disease,urinary tract infection
+Acne,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Arthritis,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Bronchial Asthma,0,0,8,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0
+Cervical spondylosis,0,0,1,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Chicken pox,0,0,0,0,7,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+Common Cold,0,0,0,1,0,6,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0
+Dengue,0,0,0,0,2,0,5,0,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0
+Dimorphic Hemorrhoids,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Fungal infection,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0
+Hypertension,0,0,0,0,0,0,0,0,0,5,0,0,1,0,0,0,0,0,0,3,1,0,0,0
+Impetigo,1,0,0,0,0,0,0,0,0,0,7,2,0,0,0,0,0,0,0,0,0,0,0,0
+Jaundice,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0
+Malaria,0,0,0,0,0,0,0,0,0,0,0,0,6,1,0,0,0,0,0,2,0,0,0,0
+Migraine,0,0,0,0,0,0,0,0,0,1,0,0,0,7,0,0,0,0,0,1,0,0,0,0
+Pneumonia,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0
+Psoriasis,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,3,0,0,1,1,3,0,0,0
+Typhoid,0,0,0,0,1,0,3,0,0,0,0,0,0,1,0,0,5,0,0,0,0,0,0,0
+Varicose Veins,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,2,0,0
+allergy,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,6,2,1,0,0,0
+diabetes,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,7,2,0,0,0
+drug reaction,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,0,0,0,1,6,0,0,0
+gastroesophageal reflux disease,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,8,0,0
+peptic ulcer disease,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,0,1,6,0
+urinary tract infection,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,8

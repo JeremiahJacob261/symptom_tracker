@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symptom Tracker - Design Preview</title>
+    <style>
+        :root {
+            /* Light Mode Colors */
+            --primary: #009688;
+            --primary-container: #B2DFDB;
+            --secondary: #00897B;
+            --secondary-container: #80CBC4;
+            --surface: #FFFFFF;
+            --surface-variant: #F5F5F5;
+            --background: #FAFAFA;
+            --on-surface: #212121;
+            --on-surface-variant: #757575;
+            --error: #D32F2F;
+            --outline: #E0E0E0;
+
+            /* Pain Colors */
+            --pain-0: #4CAF50;
+            --pain-3: #FBC02D;
+            --pain-5: #FF9800;
+            --pain-7: #FF5722;
+            --pain-9: #F44336;
+
+            /* Spacing */
+            --xs: 4px;
+            --sm: 8px;
+            --md: 16px;
+            --lg: 24px;
+            --xl: 32px;
+
+            /* Typography */
+            --font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        [data-theme="dark"] {
+            --primary: #4DB6AC;
+            --primary-container: #004D40;
+            --secondary: #80CBC4;
+            --secondary-container: #00695C;
+            --surface: #121212;
+            --surface-variant: #1E1E1E;
+            --background: #000000;
+            --on-surface: #FFFFFF;
+            --on-surface-variant: #BDBDBD;
+            --outline: #333333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-family);
+            background: #e0e0e0;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .phone-frame {
+            width: 360px;
+            height: 800px;
+            background: var(--background);
+            border-radius: 40px;
+            border: 12px solid #333;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: #333;
+            border-radius: 0 0 20px 20px;
+            z-index: 100;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: var(--background);
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .screen::-webkit-scrollbar { width: 0; }
+
+        /* App Bar */
+        .app-bar {
+            background: var(--surface);
+            padding: 60px var(--md) var(--md);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .app-bar-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--on-surface);
+            text-align: center;
+        }
+
+        .app-bar-greeting {
+            padding: 60px var(--md) var(--md);
+            background: linear-gradient(135deg, var(--primary-container), var(--surface));
+        }
+
+        .greeting-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--on-surface);
+        }
+
+        .greeting-subtitle {
+            font-size: 12px;
+            color: var(--on-surface-variant);
+            margin-top: 2px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border-radius: 16px;
+            margin: var(--md);
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--on-surface);
+            margin-bottom: 12px;
+        }
+
+        /* Pain Slider */
+        .pain-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .pain-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(255, 152, 0, 0.2);
+            color: #FF9800;
+        }
+
+        .pain-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .slider-track {
+            flex: 1;
+            height: 8px;
+            background: var(--surface-variant);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .slider-fill {
+            height: 100%;
+            width: 50%;
+            background: var(--pain-5);
+            border-radius: 4px;
+        }
+
+        .slider-thumb {
+            width: 24px;
+            height: 24px;
+            background: var(--pain-5);
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .pain-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--pain-5), rgba(255,152,0,0.7));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(255,152,0,0.4);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--on-surface-variant);
+        }
+
+        /* Chips */
+        .chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--surface-variant);
+            color: var(--on-surface);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-family: inherit;
+        }
+
+        .chip:hover { opacity: 0.8; }
+
+        .chip.active {
+            background: var(--primary-container);
+            color: var(--on-surface);
+            font-weight: 600;
+        }
+
+        .chip-mood {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .chip-mood .icon {
+            font-size: 16px;
+        }
+
+        /* Text Field */
+        .text-field {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            background: var(--surface-variant);
+            color: var(--on-surface);
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .text-field::placeholder {
+            color: var(--on-surface-variant);
+        }
+
+        /* Buttons */
+        .btn {
+            width: calc(100% - 32px);
+            margin: 0 var(--md) var(--md);
+            padding: 16px;
+            border-radius: 16px;
+            border: none;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-filled {
+            background: var(--primary);
+            color: white;
+            height: 56px;
+        }
+
+        .btn-filled:hover { opacity: 0.9; }
+
+        .btn-outlined {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--outline);
+            height: 48px;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: var(--surface);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 20px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 50;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .nav-item .icon {
+            font-size: 24px;
+            color: var(--on-surface-variant);
+        }
+
+        .nav-item.active .icon {
+            color: var(--primary);
+        }
+
+        .nav-item .label {
+            font-size: 12px;
+            color: var(--on-surface-variant);
+        }
+
+        .nav-item.active .label {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        /* History Items */
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            margin: 0 var(--md) var(--sm);
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .pain-dot {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .history-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .history-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--on-surface);
+        }
+
+        .history-subtitle {
+            font-size: 12px;
+            color: var(--on-surface-variant);
+            margin-top: 2px;
+        }
+
+        /* Stats */
+        .chart-container {
+            height: 200px;
+            background: var(--surface-variant);
+            border-radius: 12px;
+            margin-top: 12px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 20px;
+            gap: 16px;
+        }
+
+        .bar {
+            width: 30px;
+            background: var(--primary);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: var(--on-surface-variant);
+            white-space: nowrap;
+        }
+
+        .line-chart {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Insights */
+        .insight-card {
+            background: var(--primary-container);
+            border-radius: 16px;
+            padding: 16px;
+            margin: var(--md);
+        }
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .insight-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--outline);
+        }
+
+        .stat-row:last-child { border-bottom: none; }
+
+        /* Settings */
+        .settings-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            cursor: pointer;
+        }
+
+        .settings-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--surface-variant);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .settings-content {
+            flex: 1;
+        }
+
+        .settings-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--on-surface);
+        }
+
+        .settings-subtitle {
+            font-size: 12px;
+            color: var(--on-surface-variant);
+            margin-top: 2px;
+        }
+
+        .toggle {
+            width: 48px;
+            height: 28px;
+            background: var(--primary);
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle::after {
+            content: '';
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        /* Search Bar */
+        .search-bar {
+            margin: 0 var(--md) var(--md);
+            padding: 12px 16px;
+            background: var(--surface);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            background: none;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--on-surface);
+            outline: none;
+        }
+
+        .search-bar input::placeholder {
+            color: var(--on-surface-variant);
+        }
+
+        /* Calendar */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            text-align: center;
+            padding: var(--md);
+        }
+
+        .calendar-day {
+            padding: 8px;
+            border-radius: 50%;
+            font-size: 14px;
+            color: var(--on-surface);
+            cursor: pointer;
+        }
+
+        .calendar-day.has-event {
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-day.selected {
+            background: var(--primary-container);
+            font-weight: 600;
+        }
+
+        .calendar-weekday {
+            font-size: 12px;
+            color: var(--on-surface-variant);
+            padding: 8px;
+        }
+
+        /* FAB */
+        .fab {
+            position: absolute;
+            bottom: 100px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 40;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: var(--surface);
+            padding: 0 var(--md);
+            gap: 24px;
+            border-bottom: 1px solid var(--outline);
+        }
+
+        .tab {
+            padding: 12px 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--on-surface-variant);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Screen Label */
+        .screen-label {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            background: white;
+            padding: 4px 12px;
+            border-radius: 8px;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            z-index: 1000;
+        }
+
+        .content-below-nav {
+            padding-bottom: 100px;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Toggle Dark/Light</button>
+
+    <!-- HOME SCREEN -->
+    <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="screen">
+            <div class="app-bar-greeting">
+                <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                    <div>
+                        <div class="greeting-title">Hello, John!</div>
+                        <div class="greeting-subtitle">How are you feeling today?</div>
+                    </div>
+                    <span style="font-size:20px; cursor:pointer;">👤</span>
+                </div>
+            </div>
+
+            <div class="content-below-nav">
+                <div class="card">
+                    <div class="pain-header">
+                        <span class="card-title">Pain Level</span>
+                        <span class="pain-badge">Moderate</span>
+                    </div>
+                    <div class="pain-slider-container">
+                        <div style="flex:1;">
+                            <div class="slider-track">
+                                <div class="slider-fill" style="width:50%;"></div>
+                                <div class="slider-thumb" style="left:50%;"></div>
+                            </div>
+                            <div class="slider-labels">
+                                <span>0</span>
+                                <span>10</span>
+                            </div>
+                        </div>
+                        <div class="pain-circle">5</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Body Area</div>
+                    <div class="chips-container">
+                        <button class="chip active">Head</button>
+                        <button class="chip">Neck</button>
+                        <button class="chip">Shoulder</button>
+                        <button class="chip">Chest</button>
+                        <button class="chip">Back</button>
+                        <button class="chip">Lower Back</button>
+                        <button class="chip">Arm</button>
+                        <button class="chip">Leg</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Mood</div>
+                    <div class="chips-container">
+                        <button class="chip chip-mood"><span class="icon">😊</span> Happy</button>
+                        <button class="chip chip-mood"><span class="icon">🧘</span> Calm</button>
+                        <button class="chip chip-mood active"><span class="icon">😐</span> Neutral</button>
+                        <button class="chip chip-mood"><span class="icon">😴</span> Tired</button>
+                        <button class="chip chip-mood"><span class="icon">😰</span> Stressed</button>
+                        <button class="chip chip-mood"><span class="icon">😟</span> Anxious</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Notes</div>
+                    <textarea class="text-field" placeholder="Add any additional details about how you feel..."></textarea>
+                </div>
+
+                <button class="btn btn-outlined">📷 Add Photo</button>
+                <button class="btn btn-filled">💾 Save Entry</button>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item active">
+                    <span class="icon">🏠</span>
+                    <span class="label">Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">📜</span>
+                    <span class="label">History</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">📊</span>
+                    <span class="label">Stats</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">💡</span>
+                    <span class="label">Insights</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">⚙️</span>
+                    <span class="label">Settings</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HISTORY SCREEN -->
+    <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="screen">
+            <div class="app-bar">
+                <div class="app-bar-title">History</div>
+            </div>
+
+            <div class="search-bar">
+                <span>🔍</span>
+                <input type="text" placeholder="Search entries...">
+            </div>
+
+            <div class="content-below-nav">
+                <div class="history-item">
+                    <div class="pain-dot" style="background:#FF5722;">8</div>
+                    <div class="history-content">
+                        <div class="history-title">Back - Stressed</div>
+                        <div class="history-subtitle">2024-05-25 14:30</div>
+                        <div class="history-subtitle">Pain was intense after work...</div>
+                    </div>
+                </div>
+
+                <div class="history-item">
+                    <div class="pain-dot" style="background:#FF9800;">5</div>
+                    <div class="history-content">
+                        <div class="history-title">Head - Tired</div>
+                        <div class="history-subtitle">2024-05-24 09:15</div>
+                    </div>
+                    <span>📷</span>
+                </div>
+
+                <div class="history-item">
+                    <div class="pain-dot" style="background:#4CAF50;">2</div>
+                    <div class="history-content">
+                        <div class="history-title">Neck - Calm</div>
+                        <div class="history-subtitle">2024-05-23 18:00</div>
+                    </div>
+                </div>
+
+                <div class="history-item">
+                    <div class="pain-dot" style="background:#FBC02D;">4</div>
+                    <div class="history-content">
+                        <div class="history-title">Shoulder - Neutral</div>
+                        <div class="history-subtitle">2024-05-22 11:45</div>
+                    </div>
+                </div>
+
+                <div class="history-item">
+                    <div class="pain-dot" style="background:#F44336;">9</div>
+                    <div class="history-content">
+                        <div class="history-title">Lower Back - Anxious</div>
+                        <div class="history-subtitle">2024-05-21 20:00</div>
+                        <div class="history-subtitle">Could not sleep...</div>
+                    </div>
+                    <span>📷</span>
+                </div>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item">
+                    <span class="icon">🏠</span>
+                    <span class="label">Home</span>
+                </div>
+                <div class="nav-item active">
+                    <span class="icon">📜</span>
+                    <span class="label">History</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">📊</span>
+                    <span class="label">Stats</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">💡</span>
+                    <span class="label">Insights</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">⚙️</span>
+                    <span class="label">Settings</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATS SCREEN -->
+    <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="screen">
+            <div class="app-bar">
+                <div class="app-bar-title">Statistics</div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active">
+                    <span>📈</span> Trend
+                </div>
+                <div class="tab">
+                    <span>📊</span> By Area
+                </div>
+            </div>
+
+            <div class="content-below-nav">
+                <div class="card">
+                    <div class="card-title">Pain Trend Over Time</div>
+                    <div class="chart-container">
+                        <svg class="line-chart" viewBox="0 0 300 150">
+                            <polyline points="0,120 50,90 100,100 150,60 200,40 250,70 300,30" 
+                                fill="none" stroke="var(--primary)" stroke-width="3"/>
+                            <circle cx="0" cy="120" r="4" fill="var(--primary)"/>
+                            <circle cx="50" cy="90" r="4" fill="var(--primary)"/>
+                            <circle cx="100" cy="100" r="4" fill="var(--primary)"/>
+                            <circle cx="150" cy="60" r="4" fill="var(--primary)"/>
+                            <circle cx="200" cy="40" r="4" fill="var(--primary)"/>
+                            <circle cx="250" cy="70" r="4" fill="var(--primary)"/>
+                            <circle cx="300" cy="30" r="4" fill="var(--primary)"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Quick Summary</div>
+                    <div class="stat-row">
+                        <span>📋</span>
+                        <div class="settings-content">
+                            <div class="settings-title">Total Entries</div>
+                        </div>
+                        <span style="font-weight:700;">42</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>📈</span>
+                        <div class="settings-content">
+                            <div class="settings-title">Average Pain</div>
+                        </div>
+                        <span style="font-weight:700;">5.2/10</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>⚠️</span>
+                        <div class="settings-content">
+                            <div class="settings-title">Highest Pain</div>
+                        </div>
+                        <span style="font-weight:700;">9/10</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item">
+                    <span class="icon">🏠</span>
+                    <span class="label">Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">📜</span>
+                    <span class="label">History</span>
+                </div>
+                <div class="nav-item active">
+                    <span class="icon">📊</span>
+                    <span class="label">Stats</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">💡</span>
+                    <span class="label">Insights</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">⚙️</span>
+                    <span class="label">Settings</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INSIGHTS SCREEN -->
+    <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="screen">
+            <div class="app-bar" style="display:flex; justify-content:space-between; align-items:center; padding-right:16px;">
+                <div class="app-bar-title" style="flex:1; text-align:center;">AI Insights</div>
+                <span style="cursor:pointer;">🔄</span>
+            </div>
+
+            <div class="content-below-nav">
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <div class="insight-icon">🧠</div>
+                        <div>
+                            <div style="font-weight:700; color:var(--on-surface);">AI Analysis</div>
+                            <div style="font-size:12px; color:var(--on-surface-variant);">Based on 42 entries</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="font-size:14px; line-height:1.6; color:var(--on-surface);">
+                        <strong>Health Pattern Analysis</strong><br><br>
+                        <strong>Overall Statistics:</strong><br>
+                        • Total entries: 42<br>
+                        • Average pain level: 5.2/10<br>
+                        • Recent 7-day average: 6.1/10<br><br>
+                        <strong>Most affected area:</strong> Back (avg 7.3/10)<br>
+                        <strong>Most common during:</strong> Stressed mood (avg 6.8/10)<br><br>
+                        <strong>Trend:</strong> Pain levels have increased recently. Consider consulting a healthcare provider.<br><br>
+                        <strong>Recommendations:</strong><br>
+                        • Moderate pain levels. Consider lifestyle adjustments.<br>
+                        • Back pain may improve with stretching and posture correction.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Quick Stats</div>
+                    <div class="stat-row">
+                        <span>📋</span>
+                        <div class="settings-content">
+                            <div class="settings-title">Total Entries</div>
+                        </div>
+                        <span style="font-weight:700; color:var(--primary);">42</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>📈</span>
+                        <div class="settings-content">
+                            <div class="settings-title">Average Pain</div>
+                        </div>
+                        <span style="font-weight:700; color:var(--primary);">5.2/10</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>⚠️</span>
+                        <div class="settings-content">
+                            <div class="settings-title">Highest Pain</div>
+                        </div>
+                        <span style="font-weight:700; color:var(--primary);">9/10</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>📍</span>
+                        <div class="settings-content">
+                            <div class="settings-title">Most Common Area</div>
+                        </div>
+                        <span style="font-weight:700; color:var(--primary);">Back</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>😊</span>
+                        <div class="settings-content">
+                            <div class="settings-title">Most Common Mood</div>
+                        </div>
+                        <span style="font-weight:700; color:var(--primary);">Neutral</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item">
+                    <span class="icon">🏠</span>
+                    <span class="label">Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">📜</span>
+                    <span class="label">History</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">📊</span>
+                    <span class="label">Stats</span>
+                </div>
+                <div class="nav-item active">
+                    <span class="icon">💡</span>
+                    <span class="label">Insights</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">⚙️</span>
+                    <span class="label">Settings</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SETTINGS SCREEN -->
+    <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="screen">
+            <div class="app-bar">
+                <div class="app-bar-title">Settings</div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active">
+                    <span>⚙️</span> General
+                </div>
+                <div class="tab">
+                    <span>💊</span> Meds
+                </div>
+                <div class="tab">
+                    <span>📅</span> Calendar
+                </div>
+            </div>
+
+            <div class="content-below-nav">
+                <div class="card" style="padding:0;">
+                    <div class="settings-item">
+                        <div class="settings-icon">👤</div>
+                        <div class="settings-content">
+                            <div class="settings-title">Profile</div>
+                            <div class="settings-subtitle">John Doe</div>
+                        </div>
+                        <span>›</span>
+                    </div>
+                </div>
+
+                <div class="card" style="padding:0;">
+                    <div class="settings-item">
+                        <div class="settings-icon" style="background:rgba(0,150,136,0.1);">🌙</div>
+                        <div class="settings-content">
+                            <div class="settings-title">Dark Mode</div>
+                            <div class="settings-subtitle">Toggle between light and dark theme</div>
+                        </div>
+                        <div class="toggle"></div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding:0;">
+                    <div class="settings-item">
+                        <div class="settings-icon" style="background:rgba(76,175,80,0.1);">📥</div>
+                        <div class="settings-content">
+                            <div class="settings-title">Export to CSV</div>
+                            <div class="settings-subtitle">Share your data as spreadsheet</div>
+                        </div>
+                        <span>›</span>
+                    </div>
+                    <div style="height:1px; background:var(--outline); margin:0 20px;"></div>
+                    <div class="settings-item">
+                        <div class="settings-icon" style="background:rgba(244,67,54,0.1);">📄</div>
+                        <div class="settings-content">
+                            <div class="settings-title">Export to PDF</div>
+                            <div class="settings-subtitle">Generate printable report</div>
+                        </div>
+                        <span>›</span>
+                    </div>
+                </div>
+
+                <div class="card" style="padding:0;">
+                    <div class="settings-item">
+                        <div class="settings-icon">ℹ️</div>
+                        <div class="settings-content">
+                            <div class="settings-title">About</div>
+                            <div class="settings-subtitle">Symptom Tracker v1.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item">
+                    <span class="icon">🏠</span>
+                    <span class="label">Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">📜</span>
+                    <span class="label">History</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">📊</span>
+                    <span class="label">Stats</span>
+                </div>
+                <div class="nav-item">
+                    <span class="icon">💡</span>
+                    <span class="label">Insights</span>
+                </div>
+                <div class="nav-item active">
+                    <span class="icon">⚙️</span>
+                    <span class="label">Settings</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+        }
+    </script>
+</body>
+</html>

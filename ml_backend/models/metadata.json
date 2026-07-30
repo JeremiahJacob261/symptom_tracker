@@ -1,0 +1,36 @@
+{
+  "dataset": "Symptom2Disease",
+  "dataset_url": "https://www.kaggle.com/datasets/niyarrbarman/symptom2disease",
+  "dataset_rows_after_cleaning": 1153,
+  "class_count": 24,
+  "random_state": 42,
+  "selection_metric": "macro_f1",
+  "selected_model": "random_forest",
+  "models": {
+    "decision_tree": {
+      "accuracy": 0.7272727272727273,
+      "macro_f1": 0.7385372695299427,
+      "weighted_f1": 0.7325443048273996,
+      "train_rows": 922,
+      "test_rows": 231,
+      "classes": 24
+    },
+    "naive_bayes": {
+      "accuracy": 0.948051948051948,
+      "macro_f1": 0.9492011759746314,
+      "weighted_f1": 0.9472220010126041,
+      "train_rows": 922,
+      "test_rows": 231,
+      "classes": 24
+    },
+    "random_forest": {
+      "accuracy": 0.9523809523809523,
+      "macro_f1": 0.9531792770502556,
+      "weighted_f1": 0.9515829353723322,
+      "train_rows": 922,
+      "test_rows": 231,
+      "classes": 24
+    }
+  },
+  "warning": "This educational dataset does not establish clinical diagnostic validity. Outputs must be displayed as possible pattern matches, not diagnoses."
+}
