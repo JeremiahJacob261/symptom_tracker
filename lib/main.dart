@@ -257,6 +257,7 @@ class MyApp extends StatelessWidget {
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFFF5F5F5),
         selectedColor: _AppPalette.aqua,
+        side: BorderSide.none,
         labelStyle: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w500,
@@ -278,7 +279,7 @@ class MyApp extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(22),
-          borderSide: const BorderSide(color: Color(0xFFECECEC)),
+          borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(22),
@@ -417,6 +418,7 @@ class MyApp extends StatelessWidget {
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFF1E1E1E),
         selectedColor: const Color(0xFF004D40),
+        side: BorderSide.none,
         labelStyle: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
@@ -1429,7 +1431,7 @@ class _HomeScreenState extends State<HomeScreen> {
       slivers: [
         SliverToBoxAdapter(
           child: Container(
-            padding: const EdgeInsets.fromLTRB(24, 58, 24, 24),
+            padding: const EdgeInsets.fromLTRB(20, 58, 20, 24),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -1457,18 +1459,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(height: 2),
                     Text(
                       'How are you feeling today?',
-                      style: theme.textTheme.bodySmall?.copyWith(
+                      style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
-                        fontSize: 16,
                       ),
                     ),
                   ],
                 ),
-                IconButton(
-                  onPressed: _showNameDialog,
-                  icon: Icon(
-                    _userName != null ? Icons.person : Icons.person_add,
-                    color: theme.colorScheme.onSurfaceVariant,
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    onPressed: _showNameDialog,
+                    icon: Icon(
+                      _userName != null ? Icons.person : Icons.person_add,
+                      color: theme.colorScheme.onPrimaryContainer,
+                    ),
                   ),
                 ),
               ],
@@ -1494,7 +1503,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           horizontal: 20, vertical: 8),
                       decoration: BoxDecoration(
                         color: painColor.withValues(alpha: 0.18),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(14),
                       ),
                       child: Text(
                         _getPainLabel(_painLevel),
@@ -1606,15 +1615,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 9,
+                        horizontal: 12,
+                        vertical: 8,
                       ),
                       labelStyle: TextStyle(
                         color: _symptomChipForegroundColor(
                           theme,
                           isSelected,
                         ),
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight:
                             isSelected ? FontWeight.w800 : FontWeight.w400,
                       ),
@@ -1642,7 +1651,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 8),
                 Text(
                   'Select any symptoms that apply. Temperature is optional—use a home thermometer if you have one.',
-                  style: theme.textTheme.bodySmall?.copyWith(
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
@@ -1704,7 +1713,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 4),
                   Text(
                     'These are saved with your entry and can improve the educational pattern match.',
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
@@ -1740,15 +1749,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    DropdownButton<String>(
-                      value: _temperatureUnit,
-                      onChanged: (value) => setState(
-                        () => _temperatureUnit = value ?? _temperatureUnit,
+                    SizedBox(
+                      width: 88,
+                      child: DropdownButtonFormField<String>(
+                        initialValue: _temperatureUnit,
+                        decoration: const InputDecoration(
+                          labelText: 'Unit',
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 16,
+                          ),
+                        ),
+                        onChanged: (value) => setState(
+                          () => _temperatureUnit = value ?? _temperatureUnit,
+                        ),
+                        items: const [
+                          DropdownMenuItem(value: 'C', child: Text('°C')),
+                          DropdownMenuItem(value: 'F', child: Text('°F')),
+                        ],
                       ),
-                      items: const [
-                        DropdownMenuItem(value: 'C', child: Text('°C')),
-                        DropdownMenuItem(value: 'F', child: Text('°F')),
-                      ],
                     ),
                   ],
                 ),
@@ -1792,12 +1811,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 9,
+                        horizontal: 12,
+                        vertical: 8,
                       ),
                       labelStyle: TextStyle(
                         color: labelColor,
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight:
                             isSelected ? FontWeight.w800 : FontWeight.w400,
                       ),
@@ -1867,7 +1886,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 12),
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(14),
                     child: kIsWeb && _photoPreviewBytes != null
                         ? Image.memory(
                             _photoPreviewBytes!,
@@ -1898,6 +1917,12 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: _pickImage,
               icon: const Icon(Icons.camera_alt, size: 18),
               label: const Text('Add Photo'),
+              style: OutlinedButton.styleFrom(
+                backgroundColor: theme.colorScheme.primaryContainer,
+                foregroundColor: theme.colorScheme.onPrimaryContainer,
+                minimumSize: const Size(double.infinity, 56),
+                side: BorderSide.none,
+              ),
             ),
           ),
         ),
